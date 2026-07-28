@@ -12,11 +12,11 @@ Mas a mansão guarda muitos segredos e perigos, e cada escolha pode mudar o dest
 - Sistema de escolhas
 - Introdução narrativa
 - Exploração inicial da mansão
+- vida e inventário
 
 ## Futuras atualizações
 
-- Sistema de inventário
-- Vida e status do jogador
+- status do jogador
 - Mais salas exploráveis
 - Personagens com histórias próprias
 - Inimigos e eventos aleatórios
