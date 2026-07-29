@@ -16,7 +16,6 @@ Mas a mansão guarda muitos segredos e perigos, e cada escolha pode mudar o dest
 
 ## Futuras atualizações
 
-- status do jogador
 - Mais salas exploráveis
 - Personagens com histórias próprias
 - Inimigos e eventos aleatórios
