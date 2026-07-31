@@ -63,6 +63,14 @@ def conversar_grupo():
     else:
         print("\nNinguém entendeu sua escolha.")
 
+def receber_dano(dano):
+    global vida
+
+    vida = vida - dano
+
+    print(f"\nVocê recebeu {dano} de dano!")
+    print(f"Vida atual: {vida}")
+
 
 # =========================
 # MENU PRINCIPAL
@@ -135,7 +143,7 @@ while jogando:
 
                 print("Você consegue se defender com a faca, mas acaba se machucando no processo.")
 
-                vida = vida - 20
+                receber_dano(20)
                 dentro_da_sala = False
 
 

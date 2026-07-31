@@ -14,6 +14,7 @@ Mas a mansão guarda muitos segredos e perigos, e cada escolha pode mudar o dest
 - Exploração inicial da mansão
 - vida e inventário
 - personagens com personalidade própia e mais dialogo
+- escolha de nome
 
 ## Futuras atualizações
 
