@@ -3,7 +3,10 @@
 # =========================
 
 print('=== JOGO DE SOBREVIVENCIA ===')
-print('Voce estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
+
+nome = input("\nQual é o seu nome? ")
+
+print(f'\n{nome}, você estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
 
 
 # =========================
