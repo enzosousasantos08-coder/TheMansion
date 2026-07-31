@@ -13,11 +13,11 @@ Mas a mansão guarda muitos segredos e perigos, e cada escolha pode mudar o dest
 - Introdução narrativa
 - Exploração inicial da mansão
 - vida e inventário
+- personagens com personalidade própia e mais dialogo
 
 ## Futuras atualizações
 
 - Mais salas exploráveis
-- Personagens com histórias próprias
 - Inimigos e eventos aleatórios
 - Múltiplos finais
 

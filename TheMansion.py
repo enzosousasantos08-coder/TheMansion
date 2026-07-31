@@ -5,6 +5,7 @@
 print('=== JOGO DE SOBREVIVENCIA ===')
 print('Voce estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
 
+
 # =========================
 # VARIÁVEIS DO JOGO
 # =========================
@@ -34,11 +35,38 @@ def mostrar_status():
     print('----------------------------')
 
 
+def conversar_grupo():
+
+    print("\nVocê se reúne com o grupo na entrada da mansão.")
+
+    print("\n1 - Conversar com Helena")
+    print("2 - Conversar com Davi")
+    print("3 - Voltar")
+
+    conversa = input("Escolha com quem falar: ")
+
+    if conversa == "1":
+        print("\nHelena: Essa mansão é maior do que parece.")
+        print("Helena: Acho que deveríamos explorar separadamente. Se ficarmos todos juntos, vamos perder muito tempo.")
+
+    elif conversa == "2":
+        print("\nDavi: Eu não gosto dessa ideia, mas não temos muitas opções.")
+        print("Davi: Vamos dividir os caminhos e procurar qualquer coisa que possa nos ajudar.")
+        print("Davi: Se encontrarmos algo estranho, voltamos imediatamente.")
+
+    elif conversa == "3":
+        print("\nVocê volta a investigar a mansão.")
+
+    else:
+        print("\nNinguém entendeu sua escolha.")
+
+
 # =========================
 # MENU PRINCIPAL
 # =========================
 
 while jogando:
+
     mostrar_status()
 
     print('O que voce deseja fazer?')
@@ -47,6 +75,7 @@ while jogando:
     print('3 - Sair do jogo')
 
     escolha = input('Digite o número da sua escolha: ')
+
 
     # =========================
     # EXPLORAR MANSÃO
@@ -57,9 +86,11 @@ while jogando:
         dentro_da_sala = True
 
         while dentro_da_sala:
+
             mostrar_status()
 
             if faca_pega == False:
+
                 print('Voce vira a esquerda e se depara com uma sala de jantar chique com uma porta no fundo')
                 print("Você encontra uma faca sobre a mesa e a guarda com você")
 
@@ -67,7 +98,9 @@ while jogando:
                 faca_pega = True
 
             else:
+
                 print("A mesa está vazia. Você já pegou a faca.")
+
 
             print('\nO que você deseja fazer agora?')
             print('1 - Explorar a sala de jantar')
@@ -79,12 +112,14 @@ while jogando:
             if escolha1 == "1":
 
                 if chave_pega == False:
+
                     print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
 
                     inventario.append("chave de caveira")
                     chave_pega = True
 
                 else:
+
                     print("A mesa está vazia. Você já pegou a chave.")
 
 
@@ -101,18 +136,15 @@ while jogando:
                 dentro_da_sala = False
 
 
+
     # =========================
     # CONVERSAR COM O GRUPO
     # =========================
 
     elif escolha == "2":
 
-        print("\n----------------------------")
-        print("Você conversa com o grupo.")
+        conversar_grupo()
 
-        print("Um deles diz que não é seguro sair da mansão, então deveriam investigar a mansão enorme separadamente")
-
-        print("----------------------------")
 
 
     # =========================
@@ -125,9 +157,11 @@ while jogando:
         jogando = False
 
 
+
     else:
 
         print("\nVocê ficou parado, o seu grupo foi explorar e agora voce esta sozinho, o silencio te incomoda")
+
 
 
     # =========================
