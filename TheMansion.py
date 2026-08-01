@@ -23,6 +23,8 @@ chave_pega = False
 conversa_personagemh = False
 conversa_personagemd = False
 mesa_explorada = False
+municao = 0
+bandagem = 0
 
 
 # =========================
@@ -39,6 +41,9 @@ def mostrar_status():
         print('Inventário:')
         for item in inventario:
             print(f'- {item}')
+
+    print(f'Munição: {municao}')
+    print(f'Bandagens: {bandagem}')
 
     print('----------------------------')
 
@@ -145,13 +150,18 @@ while jogando:
                 print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
 
                 inventario.append("chave de caveira")
+
                 item = random.randint(1,3)
+
                 if item == 1:
                  inventario.append("munição")
-                 print("Você encontrou munição.")
+                 municao += 3
+                 print("Você encontrou 3 munições.")
 
                 elif item == 2:
+                 bandagem += 1
                  inventario.append("bandagem")
+                
                  print("Você encontrou uma bandagem.")
 
                 else:
