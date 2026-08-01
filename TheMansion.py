@@ -13,6 +13,8 @@ print(f'\n{nome}, você estava fugindo de criaturas na floresta, e se refugiou e
 # VARIÁVEIS DO JOGO
 # =========================
 
+import random
+
 jogando = True
 vida = 100
 inventario = []
@@ -20,6 +22,7 @@ faca_pega = False
 chave_pega = False
 conversa_personagemh = False
 conversa_personagemd = False
+mesa_explorada = False
 
 
 # =========================
@@ -137,12 +140,25 @@ while jogando:
             escolha1 = input('Digite o número da sua escolha: ')
 
 
-            if escolha1 == "1" and chave_pega == False:
+            if escolha1 == "1" and mesa_explorada == False:
 
                 print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
 
                 inventario.append("chave de caveira")
+                item = random.randint(1,3)
+                if item == 1:
+                 inventario.append("munição")
+                 print("Você encontrou munição.")
+
+                elif item == 2:
+                 inventario.append("bandagem")
+                 print("Você encontrou uma bandagem.")
+
+                else:
+                 print("Você não encontrou mais nada.")
+
                 chave_pega = True
+                mesa_explorada = True
 
 
             elif escolha1 == "2":
