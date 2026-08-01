@@ -18,6 +18,8 @@ vida = 100
 inventario = []
 faca_pega = False
 chave_pega = False
+conversa_personagemh = False
+conversa_personagemd = False
 
 
 # =========================
@@ -40,27 +42,41 @@ def mostrar_status():
 
 def conversar_grupo():
 
-    print("\nVocê se reúne com o grupo na entrada da mansão.")
+    global conversa_personagemh, conversa_personagemd
 
-    print("\n1 - Conversar com Helena")
-    print("2 - Conversar com Davi")
-    print("3 - Voltar")
+    conversando = True
 
-    conversa = input("Escolha com quem falar: ")
+    while conversando:
 
-    if conversa == "1":
+     print("\nVocê se reúne com o grupo na entrada da mansão.")
+
+     if conversa_personagemh == False:
+      print("\n1 - Conversar com Helena")
+    
+     if conversa_personagemd == False:
+      print("2 - Conversar com Davi")
+
+     print("3 - Voltar")
+
+     conversa = input("Escolha com quem falar: ")
+
+     if conversa == "1" and conversa_personagemh == False:
         print("\nHelena: Essa mansão é maior do que parece.")
         print("Helena: Acho que deveríamos explorar separadamente. Se ficarmos todos juntos, vamos perder muito tempo.")
+        conversa_personagemh = True
 
-    elif conversa == "2":
+     elif conversa == "2" and conversa_personagemd == False:
         print("\nDavi: Eu não gosto dessa ideia, mas não temos muitas opções.")
         print("Davi: Vamos dividir os caminhos e procurar qualquer coisa que possa nos ajudar.")
         print("Davi: Se encontrarmos algo estranho, voltamos imediatamente.")
+        conversa_personagemd = True
 
-    elif conversa == "3":
+     elif conversa == "3":
         print("\nVocê volta a investigar a mansão.")
+        conversando = False
 
-    else:
+
+     else:
         print("\nNinguém entendeu sua escolha.")
 
 def receber_dano(dano):
@@ -114,24 +130,19 @@ while jogando:
 
 
             print('\nO que você deseja fazer agora?')
-            print('1 - Explorar a sala de jantar')
+            if chave_pega == False:
+                print('1 - Explorar a sala de jantar')
             print('2 - Abrir a porta no fundo da sala')
 
             escolha1 = input('Digite o número da sua escolha: ')
 
 
-            if escolha1 == "1":
+            if escolha1 == "1" and chave_pega == False:
 
-                if chave_pega == False:
+                print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
 
-                    print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
-
-                    inventario.append("chave de caveira")
-                    chave_pega = True
-
-                else:
-
-                    print("A mesa está vazia. Você já pegou a chave.")
+                inventario.append("chave de caveira")
+                chave_pega = True
 
 
             elif escolha1 == "2":
@@ -145,6 +156,10 @@ while jogando:
 
                 receber_dano(20)
                 dentro_da_sala = False
+
+            else:
+
+                print("\nOpção inválida.")
 
 
 
