@@ -181,11 +181,50 @@ while jogando:
                 print("Você consegue se defender com a faca, mas acaba se machucando no processo.")
 
                 receber_dano(20)
-                dentro_da_sala = False
 
-            else:
+                vida_inimigo = 30
+                
+                while vida > 0 and vida_inimigo > 0:
 
-                print("\nOpção inválida.")
+                 print('o que você deseja fazer agora?')
+
+                 print('1 - Atacar a criatura com a faca')
+                 print('2 - Usar uma bandagem para se curar')
+
+                 escolhaluta = input('Digite o número da sua escolha: ')
+
+                 if escolhaluta == "1":
+                  dano = random.randint(10, 20)
+                  print(f"\nVocê ataca a criatura com a faca e causa {dano} de dano!")
+                  vida_inimigo -= dano
+
+                 elif escolhaluta == "2":
+                     if bandagem > 0:
+                         bandagem -= 1
+                         vida += 40
+                         if vida > 100:
+                             vida = 100
+
+                         print(f"\nVocê usa uma bandagem e recupera 40 de vida!")
+                     else:
+                         print("\nVocê não tem bandagens suficientes.")
+                 else:
+                                    print("\nOpção inválida.")
+
+                 # ATAQUE DO INIMIGO
+                 if vida_inimigo > 0:
+                   dano_inimigo = random.randint(10, 15)
+                   print(f"\nA criatura ataca e causa {dano_inimigo} de dano!")
+                   receber_dano(dano_inimigo)
+
+                 if vida_inimigo <= 0:
+                     print("\nVocê derrotou a criatura")
+                     
+                     dentro_da_sala = False
+
+            
+                 
+
 
 
 
