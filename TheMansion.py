@@ -193,10 +193,15 @@ while jogando:
 
                  escolhaluta = input('Digite o número da sua escolha: ')
 
+                 acerto = random.randint(1,100)
+
                  if escolhaluta == "1":
-                  dano = random.randint(10, 20)
-                  print(f"\nVocê ataca a criatura com a faca e causa {dano} de dano!")
-                  vida_inimigo -= dano
+                  if acerto <= 80:
+                   dano = random.randint(10, 20)
+                   print(f"\nVocê acertou a criatura com a faca e causa {dano} de dano!")
+                   vida_inimigo -= dano
+                  else:
+                   print("\nVocê errou o ataque!")
 
                  elif escolhaluta == "2":
                      if bandagem > 0:
@@ -213,9 +218,14 @@ while jogando:
 
                  # ATAQUE DO INIMIGO
                  if vida_inimigo > 0:
-                   dano_inimigo = random.randint(10, 15)
-                   print(f"\nA criatura ataca e causa {dano_inimigo} de dano!")
-                   receber_dano(dano_inimigo)
+                   
+                   acerto_inimigo = random.randint(1,100)
+                   if acerto_inimigo <= 70:
+                    dano_inimigo = random.randint(10, 15)
+                    print(f"\nA criatura acerta e causa {dano_inimigo} de dano!")
+                    receber_dano(dano_inimigo)
+                   else:
+                    print("\nA criatura errou o ataque!")
 
                  if vida_inimigo <= 0:
                      print("\nVocê derrotou a criatura")
