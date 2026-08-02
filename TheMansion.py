@@ -229,7 +229,24 @@ while jogando:
 
                  if vida_inimigo <= 0:
                      print("\nVocê derrotou a criatura")
-                     
+
+                # EXPLORAÇÃO
+                     print('A criatura cai no chão, e voce decide continuar explorando o corredor e ve duas portas a esquerda')
+                     print('O que você deseja fazer agora?')
+                     print('1 - Abrir a primeira porta')
+                     print('2 - Abrir a segunda porta')
+
+                     escolha_porta = input('Digite o número da sua escolha: ')
+                     if escolha_porta == "1":
+                        print("\nVocê abre a porta e encontra um quarto antigo com móveis cobertos de poeira. Parece que ninguém entrou aqui há muito tempo.")
+                        print("Você encontra uma bandagem em cima da cama e a guarda com você.")
+                        bandagem += 1
+                        inventario.append("bandagem")
+                     elif escolha_porta == "2":
+                        print("\nVocê abre a porta e encontra um pequeno escritório com uma escrivaninha com gavetas e algumas estantes de livros.")
+                        print("Você encontra uma munição em cima da escrivaninha e a guarda com você.")
+                        municao += 1
+                        inventario.append("munição")
                      dentro_da_sala = False
 
             
