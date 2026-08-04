@@ -1,115 +1,99 @@
 import random
 
 # =========================
-# INTRODUÇÃO
+# CLASSES (POO de verdade)
 # =========================
+# Antes: vida, inventario e funções soltas usando "global"
+# Agora: tudo isso vive DENTRO da classe Personagem, como atributos (self.vida,
+# self.inventario) e métodos (self.receber_dano(), self.usar_item()...).
+# Isso evita precisar de "global" e deixa o código mais organizado.
 
-print('=== JOGO DE SOBREVIVENCIA ===')
+class Personagem:
+    def __init__(self, nome, vida, inventario=None):
+        self.nome = nome
+        self.vida = vida
+        self.inventario = inventario if inventario is not None else []
 
-nome = input("\nQual é o seu nome? ")
+    def adicionar_item(self, nome_item, tipo, quantidade=1):
+        for item in self.inventario:
+            if item["nome"] == nome_item:
+                item["quantidade"] += quantidade
+                print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
+                return
+        self.inventario.append({"nome": nome_item, "tipo": tipo, "quantidade": quantidade})
+        print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
 
-print(f'\n{nome}, você estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
+    def quantidade_item(self, nome_item):
+        for item in self.inventario:
+            if item["nome"] == nome_item:
+                return item["quantidade"]
+        return 0
 
-# =========================
-# VARIÁVEIS DO JOGO
-# =========================
+    def usar_item(self, nome_item, quantidade=1):
+        for item in self.inventario:
+            if item["nome"] == nome_item and item["quantidade"] >= quantidade:
+                item["quantidade"] -= quantidade
+                return True
+        return False
 
-jogando = True
-vida = 100
-inventario = []  # lista de dicionários: {"nome": ..., "tipo": ..., "quantidade": ...}
+    def receber_dano(self, dano):
+        self.vida -= dano
+        print(f"\nVocê recebeu {dano} de dano!")
+        print(f"Vida atual: {self.vida}")
 
-faca_pega = False
-chave_pega = False
-conversa_personagemh = False
-conversa_personagemd = False
-mesa_explorada = False
+    def curar(self, quantidade):
+        self.vida += quantidade
+        if self.vida > 100:
+            self.vida = 100
+        print(f"\nVocê usa uma bandagem e recupera {quantidade} de vida!")
 
+    def esta_vivo(self):
+        return self.vida > 0
 
-# =========================
-# FUNÇÕES
-# =========================
+    def mostrar_status(self):
+        print('\n----------------------------')
+        print(f'Vida: {self.vida}')
 
-def adicionar_item(nome_item, tipo, quantidade=1):
-    for item in inventario:
-        if item["nome"] == nome_item:
-            item["quantidade"] += quantidade
-            print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
-            return
-    inventario.append({"nome": nome_item, "tipo": tipo, "quantidade": quantidade})
-    print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
-
-
-def quantidade_item(nome_item):
-    for item in inventario:
-        if item["nome"] == nome_item:
-            return item["quantidade"]
-    return 0
-
-
-def usar_item(nome_item, quantidade=1):
-    for item in inventario:
-        if item["nome"] == nome_item and item["quantidade"] >= quantidade:
-            item["quantidade"] -= quantidade
-            return True
-    return False
-
-
-def mostrar_status():
-    print('\n----------------------------')
-    print(f'Vida: {vida}')
-
-    if len(inventario) == 0:
-        print('Inventário: vazio')
-    else:
-        print('Inventário:')
-        for item in inventario:
-            print(f"- {item['nome']} x{item['quantidade']}")
-
-    print('----------------------------')
-
-
-def conversar_grupo():
-    global conversa_personagemh, conversa_personagemd
-    conversando = True
-
-    while conversando:
-        print("\nVocê se reúne com o grupo na entrada da mansão.")
-
-        if conversa_personagemh == False:
-            print("\n1 - Conversar com Helena")
-        if conversa_personagemd == False:
-            print("2 - Conversar com Davi")
-        print("3 - Voltar")
-
-        conversa = input("Escolha com quem falar: ")
-
-        if conversa == "1" and conversa_personagemh == False:
-            print("\nHelena: Essa mansão é maior do que parece.")
-            print("Helena: Acho que deveríamos explorar separadamente. Se ficarmos todos juntos, vamos perder muito tempo.")
-            conversa_personagemh = True
-        elif conversa == "2" and conversa_personagemd == False:
-            print("\nDavi: Eu não gosto dessa ideia, mas não temos muitas opções.")
-            print("Davi: Vamos dividir os caminhos e procurar qualquer coisa que possa nos ajudar.")
-            print("Davi: Se encontrarmos algo estranho, voltamos imediatamente.")
-            conversa_personagemd = True
-        elif conversa == "3":
-            print("\nVocê volta a investigar a mansão.")
-            conversando = False
+        if len(self.inventario) == 0:
+            print('Inventário: vazio')
         else:
-            print("\nNinguém entendeu sua escolha.")
+            print('Inventário:')
+            for item in self.inventario:
+                print(f"- {item['nome']} x{item['quantidade']}")
+
+        print('----------------------------')
 
 
-def receber_dano(dano):
-    global vida
-    vida = vida - dano
-    print(f"\nVocê recebeu {dano} de dano!")
-    print(f"Vida atual: {vida}")
+class Inimigo:
+    def __init__(self, nome, vida, dano_min=10, dano_max=15, chance_acerto=70):
+        self.nome = nome
+        self.vida = vida
+        self.dano_min = dano_min
+        self.dano_max = dano_max
+        self.chance_acerto = chance_acerto
+
+    def esta_vivo(self):
+        return self.vida > 0
+
+    def receber_dano(self, dano):
+        self.vida -= dano
+
+    def atacar(self, alvo):
+        acerto = random.randint(1, 100)
+        if acerto <= self.chance_acerto:
+            dano = random.randint(self.dano_min, self.dano_max)
+            print(f"\nA criatura acerta e causa {dano} de dano!")
+            alvo.receber_dano(dano)
+        else:
+            print("\nA criatura errou o ataque!")
 
 
-def combate(vida_inimigo):
-    global vida
+# =========================
+# FUNÇÕES DE JOGO (usam os objetos, não variáveis globais de vida/inventário)
+# =========================
 
-    while vida > 0 and vida_inimigo > 0:
+def combate(jogador, inimigo):
+    while jogador.esta_vivo() and inimigo.esta_vivo():
         print('\nO que você deseja fazer agora?')
         print('1 - Atacar a criatura com a faca')
         print('2 - Usar uma bandagem para se curar')
@@ -121,38 +105,82 @@ def combate(vida_inimigo):
             if acerto <= 80:
                 dano = random.randint(10, 20)
                 print(f"\nVocê acertou a criatura com a faca e causa {dano} de dano!")
-                vida_inimigo -= dano
+                inimigo.receber_dano(dano)
             else:
                 print("\nVocê errou o ataque!")
         elif escolhaluta == "2":
-            if usar_item("bandagem"):
-                vida += 40
-                if vida > 100:
-                    vida = 100
-                print("\nVocê usa uma bandagem e recupera 40 de vida!")
+            if jogador.usar_item("bandagem"):
+                jogador.curar(40)
             else:
                 print("\nVocê não tem bandagens suficientes.")
         else:
             print("\nOpção inválida.")
 
-        if vida_inimigo > 0:
-            acerto_inimigo = random.randint(1, 100)
-            if acerto_inimigo <= 70:
-                dano_inimigo = random.randint(10, 15)
-                print(f"\nA criatura acerta e causa {dano_inimigo} de dano!")
-                receber_dano(dano_inimigo)
-            else:
-                print("\nA criatura errou o ataque!")
+        if inimigo.esta_vivo():
+            inimigo.atacar(jogador)
 
-    return vida_inimigo <= 0
+    return not inimigo.esta_vivo()
 
+
+def conversar_grupo(estado):
+    conversando = True
+
+    while conversando:
+        print("\nVocê se reúne com o grupo na entrada da mansão.")
+
+        if not estado["conversa_helena"]:
+            print("\n1 - Conversar com Helena")
+        if not estado["conversa_davi"]:
+            print("2 - Conversar com Davi")
+        print("3 - Voltar")
+
+        conversa = input("Escolha com quem falar: ")
+
+        if conversa == "1" and not estado["conversa_helena"]:
+            print("\nHelena: Essa mansão é maior do que parece.")
+            print("Helena: Acho que deveríamos explorar separadamente. Se ficarmos todos juntos, vamos perder muito tempo.")
+            estado["conversa_helena"] = True
+        elif conversa == "2" and not estado["conversa_davi"]:
+            print("\nDavi: Eu não gosto dessa ideia, mas não temos muitas opções.")
+            print("Davi: Vamos dividir os caminhos e procurar qualquer coisa que possa nos ajudar.")
+            print("Davi: Se encontrarmos algo estranho, voltamos imediatamente.")
+            estado["conversa_davi"] = True
+        elif conversa == "3":
+            print("\nVocê volta a investigar a mansão.")
+            conversando = False
+        else:
+            print("\nNinguém entendeu sua escolha.")
+
+
+# =========================
+# INTRODUÇÃO
+# =========================
+
+print('=== JOGO DE SOBREVIVENCIA ===')
+nome = input("\nQual é o seu nome? ")
+print(f'\n{nome}, você estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
+
+# Antes: vida = 100, inventario = [] soltos.
+# Agora: tudo isso é o próprio objeto "jogador".
+jogador = Personagem(nome, vida=100)
+
+# Estado do jogo que não pertence ao personagem (flags de progresso da história)
+estado = {
+    "faca_pega": False,
+    "chave_pega": False,
+    "conversa_helena": False,
+    "conversa_davi": False,
+    "mesa_explorada": False,
+}
+
+jogando = True
 
 # =========================
 # MENU PRINCIPAL
 # =========================
 
 while jogando:
-    mostrar_status()
+    jogador.mostrar_status()
 
     print('O que voce deseja fazer?')
     print('1 - Explorar a mansão')
@@ -165,38 +193,37 @@ while jogando:
         dentro_da_sala = True
 
         while dentro_da_sala:
-            mostrar_status()
+            jogador.mostrar_status()
 
-            if faca_pega == False:
+            if not estado["faca_pega"]:
                 print('Voce vira a esquerda e se depara com uma sala de jantar chique com uma porta no fundo')
                 print("Você encontra uma faca sobre a mesa e a guarda com você")
-                adicionar_item("faca", "arma")
-                faca_pega = True
+                jogador.adicionar_item("faca", "arma")
+                estado["faca_pega"] = True
             else:
                 print("A mesa está vazia. Você já pegou a faca.")
 
             print('\nO que você deseja fazer agora?')
-            if chave_pega == False:
+            if not estado["chave_pega"]:
                 print('1 - Explorar a sala de jantar')
             print('2 - Abrir a porta no fundo da sala')
 
             escolha1 = input('Digite o número da sua escolha: ')
 
-            if escolha1 == "1" and mesa_explorada == False:
+            if escolha1 == "1" and not estado["mesa_explorada"]:
                 print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
-                adicionar_item("chave de caveira", "chave")
+                jogador.adicionar_item("chave de caveira", "chave")
 
                 item = random.randint(1, 3)
-
                 if item == 1:
-                    adicionar_item("munição", "arma", 3)
+                    jogador.adicionar_item("munição", "arma", 3)
                 elif item == 2:
-                    adicionar_item("bandagem", "cura")
+                    jogador.adicionar_item("bandagem", "cura")
                 else:
                     print("Você não encontrou mais nada.")
 
-                chave_pega = True
-                mesa_explorada = True
+                estado["chave_pega"] = True
+                estado["mesa_explorada"] = True
 
             elif escolha1 == "2":
                 print("\nVocê abre a porta e se depara com um corredor escuro.")
@@ -204,8 +231,9 @@ while jogando:
                 print("\nVocê decide seguir em frente, mas de repente uma criatura aparece e te ataca!")
                 print("Você consegue se defender com a faca, mas acaba se machucando no processo.")
 
-                receber_dano(20)
-                venceu = combate(30)
+                jogador.receber_dano(20)
+                zumbi = Inimigo("Zumbi", vida=30)
+                venceu = combate(jogador, zumbi)
 
                 if venceu:
                     print("\nVocê derrotou a criatura")
@@ -219,16 +247,16 @@ while jogando:
                     if escolha_porta == "1":
                         print("\nVocê abre a porta e encontra um quarto antigo com móveis cobertos de poeira. Parece que ninguém entrou aqui há muito tempo.")
                         print("Você encontra uma bandagem em cima da cama e a guarda com você.")
-                        adicionar_item("bandagem", "cura")
+                        jogador.adicionar_item("bandagem", "cura")
                     elif escolha_porta == "2":
                         print("\nVocê abre a porta e encontra um pequeno escritório com uma escrivaninha com gavetas e algumas estantes de livros.")
                         print("Você encontra uma munição em cima da escrivaninha e a guarda com você.")
-                        adicionar_item("munição", "arma")
+                        jogador.adicionar_item("munição", "arma")
 
                 dentro_da_sala = False
 
     elif escolha == "2":
-        conversar_grupo()
+        conversar_grupo(estado)
 
     elif escolha == "3":
         print("\nVocê decide parar por aqui. Até a próxima!")
@@ -237,6 +265,6 @@ while jogando:
     else:
         print("\nVocê ficou parado, o seu grupo foi explorar e agora voce esta sozinho, o silencio te incomoda")
 
-    if vida <= 0:
+    if not jogador.esta_vivo():
         print("\nVocê não resistiu... FIM DE JOGO")
         jogando = False
