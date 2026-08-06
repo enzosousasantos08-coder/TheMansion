@@ -13,6 +13,15 @@ class Personagem:
         self.nome = nome
         self.vida = vida
         self.inventario = inventario if inventario is not None else []
+        self.arma_equipada = Faca()  # Equipando a faca como arma inicial
+    def equipar_arma(self, arma):
+        if self.quantidade_item(arma.nome) > 0:
+            self.arma_equipada = arma
+            print(f"\nVocê equipou a {arma.nome}.")
+            return True
+        print(f"\nVocê não possui a {arma.nome} no inventário.")
+        return False
+        
 
     def adicionar_item(self, nome_item, tipo, quantidade=1):
         for item in self.inventario:
@@ -94,25 +103,47 @@ class Inimigo:
 
 def combate(jogador, inimigo):
     while jogador.esta_vivo() and inimigo.esta_vivo():
-        print('\nO que você deseja fazer agora?')
-        print('1 - Atacar a criatura com a faca')
-        print('2 - Usar uma bandagem para se curar')
 
-        escolhaluta = input('Digite o número da sua escolha: ')
-        acerto = random.randint(1, 100)
+        print("\nO que você deseja fazer agora?")
+        print("1 - Atacar com a faca")
+        print("2 - Atirar com pistola")
+        print("3 - Usar bandagem")
+
+        escolhaluta = input("Digite o número da sua escolha: ")
 
         if escolhaluta == "1":
+            acerto = random.randint(1, 100)
+
             if acerto <= 80:
                 dano = random.randint(10, 20)
-                print(f"\nVocê acertou a criatura com a faca e causa {dano} de dano!")
+                print(f"\nVocê acertou a criatura com a faca e causou {dano} de dano!")
                 inimigo.receber_dano(dano)
             else:
                 print("\nVocê errou o ataque!")
+
         elif escolhaluta == "2":
+            if jogador.quantidade_item("munição") > 0:
+
+                acerto = random.randint(1, 100)
+
+                jogador.usar_item("munição")
+
+                if acerto <= 95:
+                    dano = random.randint(25, 40)
+                    print(f"\nVocê atirou na criatura e causou {dano} de dano!")
+                    inimigo.receber_dano(dano)
+                else:
+                    print("\nVocê errou o tiro!")
+
+            else:
+                print("\nVocê não possui munição.")
+
+        elif escolhaluta == "3":
             if jogador.usar_item("bandagem"):
                 jogador.curar(40)
             else:
                 print("\nVocê não tem bandagens suficientes.")
+
         else:
             print("\nOpção inválida.")
 
@@ -216,7 +247,8 @@ while jogando:
 
                 item = random.randint(1, 3)
                 if item == 1:
-                    jogador.adicionar_item("munição", "arma", 3)
+                    jogador.adicionar_item("pistola", "arma")
+                    jogador.adicionar_item("munição", "munição", 3)
                 elif item == 2:
                     jogador.adicionar_item("bandagem", "cura")
                 else:
