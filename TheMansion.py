@@ -271,22 +271,76 @@ while jogando:
                 venceu = combate(jogador, zumbi)
 
                 if venceu:
-                    print("\nVocê derrotou a criatura")
-                    print('A criatura cai no chão, e voce decide continuar explorando o corredor e ve duas portas a esquerda')
+                 print("\nVocê derrotou a criatura.")
+                 print("O corpo cai no chão e o corredor fica em silêncio novamente.")
+                 print("À sua frente existem duas portas antigas à esquerda e um corredor que continua à sua frente.")
+
+                while True:
                     print('O que você deseja fazer agora?')
                     print('1 - Abrir a primeira porta')
                     print('2 - Abrir a segunda porta')
+                    print('3 - Continuar pelo corredor')
 
                     escolha_porta = input('Digite o número da sua escolha: ')
-
+                    
                     if escolha_porta == "1":
-                        print("\nVocê abre a porta e encontra um quarto antigo com móveis cobertos de poeira. Parece que ninguém entrou aqui há muito tempo.")
-                        print("Você encontra uma bandagem em cima da cama e a guarda com você.")
-                        jogador.adicionar_item("bandagem", "cura")
+                     print("\nVocê empurra a porta lentamente...")
+                     print("As dobradiças rangem, ecoando pelo corredor.")
+                     print("O quarto parece abandonado há décadas.")
+
+                     print("\nEm cima da cama, algo chama sua atenção.")
+                     print("Uma bandagem antiga está escondida entre os lençóis.")
+
+                     jogador.adicionar_item("bandagem", "cura")
+                     break
+
                     elif escolha_porta == "2":
-                        print("\nVocê abre a porta e encontra um pequeno escritório com uma escrivaninha com gavetas e algumas estantes de livros.")
-                        print("Você encontra uma munição em cima da escrivaninha e a guarda com você.")
-                        jogador.adicionar_item("munição", "arma")
+                     print("\nVocê segura a maçaneta e força a porta.")
+                     print("A madeira começa a quebrar...")
+                     print("Você entra em um pequeno escritório cheio de livros.")
+
+                     print("\nNas gavetas da escrivaninha, você encontra algo útil.")
+                     print("Algumas munições estavam escondidas dentro.")
+
+                     jogador.adicionar_item("munição", "arma", 3)
+                     break
+
+                    elif escolha_porta == "3":
+                     print("\nO corpo da criatura permanece imóvel no chão.")
+                     print("Você segue em frente por alguns metros.")
+                     print("O corredor termina em uma parede de concreto desgastada.")
+                     print("À esquerda, o corredor continua por um pequeno trecho com uma porta na direita" \
+                     " e no final uma escada que desce para um local pouco iluminado.")
+
+                     
+
+                    else:
+                     print("\nVocê hesita... mas precisa escolher uma porta.")
+
+                    while True:
+                        print('O que você deseja fazer agora?')
+                        print('1 - Tentar abrir a porta à direita')
+                        print('2 - Descer a escada')
+
+                        escolha_final = input('Digite o número da sua escolha: ')
+                        if escolha_final == "1":
+                            print("\nVocê se aproxima da porta e tenta girar a maçaneta.")
+                            print("A porta range, mas não abre. Parece estar trancada.")
+                            print("Você percebe que precisa de uma chave para abrir essa porta.")
+                            if jogador.quantidade_item("chave de caveira") > 0:
+                                print("\nVocê lembra da chave de caveira que encontrou na sala de jantar.")
+                                print("Você a utiliza para destrancar a porta.")
+                                print("A porta se abre lentamente, revelando uma cozinha suja e abandonada.")
+                            else:
+                                print("\nVocê não possui a chave necessária para abrir esta porta.")
+                        elif escolha_final == "2":
+                            print("\n Voce decide descer a escada.")
+                            
+
+                        
+                     
+             
+
 
                 dentro_da_sala = False
 
