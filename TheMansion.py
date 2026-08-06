@@ -117,9 +117,9 @@ class Arma:
             alvo.receber_dano(dano)
         else:
             print(f"\nVocê errou o ataque com a {self.nome}!")
-faca = Arma("Faca", dano_min=10, dano_max=20, chance_acerto=80)
+faca = Arma("faca", dano_min=10, dano_max=20, chance_acerto=80)
 
-pistola = Arma("Pistola", dano_min=25, dano_max=40, chance_acerto=70)
+pistola = Arma("pistola", dano_min=25, dano_max=40, chance_acerto=70)
 
    
 
@@ -250,7 +250,6 @@ while jogando:
 
                 item = random.randint(1, 3)
                 if item == 1:
-                    jogador.adicionar_item("pistola", "arma")
                     jogador.adicionar_item("munição", "munição", 3)
                 elif item == 2:
                     jogador.adicionar_item("bandagem", "cura")
@@ -271,11 +270,12 @@ while jogando:
                 venceu = combate(jogador, zumbi)
 
                 if venceu:
+                 corredor = True
                  print("\nVocê derrotou a criatura.")
                  print("O corpo cai no chão e o corredor fica em silêncio novamente.")
                  print("À sua frente existem duas portas antigas à esquerda e um corredor que continua à sua frente.")
 
-                while True:
+                 while True:
                     print('O que você deseja fazer agora?')
                     print('1 - Abrir a primeira porta')
                     print('2 - Abrir a segunda porta')
@@ -292,7 +292,7 @@ while jogando:
                      print("Uma bandagem antiga está escondida entre os lençóis.")
 
                      jogador.adicionar_item("bandagem", "cura")
-                     break
+                     corredor = False  
 
                     elif escolha_porta == "2":
                      print("\nVocê segura a maçaneta e força a porta.")
@@ -303,7 +303,7 @@ while jogando:
                      print("Algumas munições estavam escondidas dentro.")
 
                      jogador.adicionar_item("munição", "arma", 3)
-                     break
+                     corredor = False
 
                     elif escolha_porta == "3":
                      print("\nO corpo da criatura permanece imóvel no chão.")
@@ -312,12 +312,7 @@ while jogando:
                      print("À esquerda, o corredor continua por um pequeno trecho com uma porta na direita" \
                      " e no final uma escada que desce para um local pouco iluminado.")
 
-                     
-
-                    else:
-                     print("\nVocê hesita... mas precisa escolher uma porta.")
-
-                    while True:
+                     while True:
                         print('O que você deseja fazer agora?')
                         print('1 - Tentar abrir a porta à direita')
                         print('2 - Descer a escada')
@@ -331,18 +326,20 @@ while jogando:
                                 print("\nVocê lembra da chave de caveira que encontrou na sala de jantar.")
                                 print("Você a utiliza para destrancar a porta.")
                                 print("A porta se abre lentamente, revelando uma cozinha suja e abandonada.")
+                                corredor = False
+                                break
                             else:
                                 print("\nVocê não possui a chave necessária para abrir esta porta.")
                         elif escolha_final == "2":
                             print("\n Voce decide descer a escada.")
-                            
+                            corredor = False
+                            break
+                    
+                        else:
+                                             print("\nVocê hesita... mas precisa escolher uma porta.")
+                     break
+                    dentro_da_sala = False
 
-                        
-                     
-             
-
-
-                dentro_da_sala = False
 
     elif escolha == "2":
         conversar_grupo(estado)
