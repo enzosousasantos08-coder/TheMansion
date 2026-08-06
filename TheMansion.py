@@ -13,7 +13,7 @@ class Personagem:
         self.nome = nome
         self.vida = vida
         self.inventario = inventario if inventario is not None else []
-        self.arma_equipada = Faca()  # Equipando a faca como arma inicial
+        self.arma_equipada = None  # Equipando a faca como arma inicial
     def equipar_arma(self, arma):
         if self.quantidade_item(arma.nome) > 0:
             self.arma_equipada = arma
@@ -21,6 +21,7 @@ class Personagem:
             return True
         print(f"\nVocê não possui a {arma.nome} no inventário.")
         return False
+
         
 
     def adicionar_item(self, nome_item, tipo, quantidade=1):
@@ -31,6 +32,7 @@ class Personagem:
                 return
         self.inventario.append({"nome": nome_item, "tipo": tipo, "quantidade": quantidade})
         print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
+
 
     def quantidade_item(self, nome_item):
         for item in self.inventario:
@@ -95,6 +97,16 @@ class Inimigo:
             alvo.receber_dano(dano)
         else:
             print("\nA criatura errou o ataque!")
+
+class Arma:
+    def __init__(self, nome, dano_min, dano_max, chance_acerto):
+        self.nome = nome
+        self.dano_min = dano_min
+        self.dano_max = dano_max
+        self.chance_acerto = chance_acerto
+faca = Arma("Faca", dano_min=10, dano_max=20, chance_acerto=80)
+
+pistola = Arma("Pistola", dano_min=25, dano_max=40, chance_acerto=70)
 
 
 # =========================
@@ -230,6 +242,7 @@ while jogando:
                 print('Voce vira a esquerda e se depara com uma sala de jantar chique com uma porta no fundo')
                 print("Você encontra uma faca sobre a mesa e a guarda com você")
                 jogador.adicionar_item("faca", "arma")
+                jogador.arma_equipada = faca  # Equipando a faca como arma inicial
                 estado["faca_pega"] = True
             else:
                 print("A mesa está vazia. Você já pegou a faca.")
