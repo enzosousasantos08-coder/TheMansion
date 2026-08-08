@@ -3,81 +3,16 @@
 import random   
 
 from Personagem import Personagem
-
-
-class Inimigo:
-    def __init__(self, nome, vida, dano_min=10, dano_max=15, chance_acerto=70):
-        self.nome = nome
-        self.vida = vida
-        self.dano_min = dano_min
-        self.dano_max = dano_max
-        self.chance_acerto = chance_acerto
-
-    def esta_vivo(self):
-        return self.vida > 0
-
-    def receber_dano(self, dano):
-        self.vida -= dano
-
-    def atacar(self, alvo):
-        acerto = random.randint(1, 100)
-        if acerto <= self.chance_acerto:
-            dano = random.randint(self.dano_min, self.dano_max)
-            print(f"\nA criatura acerta e causa {dano} de dano!")
-            alvo.receber_dano(dano)
-        else:
-            print("\nA criatura errou o ataque!")
-
-class Arma:
-    def __init__(self, nome, dano_min, dano_max, chance_acerto):
-        self.nome = nome
-        self.dano_min = dano_min
-        self.dano_max = dano_max
-        self.chance_acerto = chance_acerto
-    def atacar(self, alvo):
-        acerto = random.randint(1, 100)
-        if acerto <= self.chance_acerto:
-            dano = random.randint(self.dano_min, self.dano_max)
-            print(f"\nVocê acertou a criatura com a {self.nome} e causou {dano} de dano!")
-            alvo.receber_dano(dano)
-        else:
-            print(f"\nVocê errou o ataque com a {self.nome}!")
-faca = Arma("faca", dano_min=10, dano_max=20, chance_acerto=80)
-
-pistola = Arma("pistola", dano_min=25, dano_max=40, chance_acerto=70)
+from inimigo import Inimigo
+from armas import faca
+from combate import combate
 
    
-
-
 # =========================
-# FUNÇÕES DE JOGO (usam os objetos, não variáveis globais de vida/inventário)
+# FUNÇÕES DE JOGO
 # =========================
 
-def combate(jogador, inimigo):
-    while jogador.esta_vivo() and inimigo.esta_vivo():
 
-        print("\nO que você deseja fazer agora?")
-        print("1 - Atacar com a faca")
-        print("2 - Usar bandagem")
-
-        escolhaluta = input("Digite o número da sua escolha: ")
-
-        if escolhaluta == "1":
-                jogador.atacar(inimigo)
-            
-        elif escolhaluta == "2":
-            if jogador.usar_item("bandagem"):
-                jogador.curar(40)
-            else:
-                print("\nVocê não tem bandagens suficientes.")
-
-        else:
-            print("\nOpção inválida.")
-
-        if inimigo.esta_vivo():
-            inimigo.atacar(jogador)
-
-    return not inimigo.esta_vivo()
 
 
 def conversar_grupo(estado):
@@ -117,12 +52,7 @@ def conversar_grupo(estado):
 print('=== JOGO DE SOBREVIVENCIA ===')
 nome = input("\nQual é o seu nome? ")
 print(f'\n{nome}, você estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
-
-# Antes: vida = 100, inventario = [] soltos.
-# Agora: tudo isso é o próprio objeto "jogador".
 jogador = Personagem(nome, vida=100)
-
-# Estado do jogo que não pertence ao personagem (flags de progresso da história)
 estado = {
     "faca_pega": False,
     "chave_pega": False,
