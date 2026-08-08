@@ -326,17 +326,65 @@ while jogando:
                                 print("\nVocê lembra da chave de caveira que encontrou na sala de jantar.")
                                 print("Você a utiliza para destrancar a porta.")
                                 print("A porta se abre lentamente, revelando uma cozinha suja e abandonada.")
+                                print("\nVocê entra na cozinha lentamente.")
+                                print("O cheiro de podridão é ainda mais forte aqui.")
+                                print("Há pratos quebrados espalhados pelo chão e manchas escuras nas paredes.")
+
+                                print("\nNo fundo da cozinha, você percebe três coisas:")
+                                print("1 - Uma porta de madeira")
+                                print("2 - Um armário antigo")
+                                print("3 - Uma geladeira aparentemente desligada")
+
+                                while True:
+                                  escolha_cozinha = input("\nO que você deseja investigar? ")
+
+                                  if escolha_cozinha == "1":
+                                   print("\nVocê se aproxima da porta.")
+                                   print("A maçaneta está coberta por uma substância escura.")
+                                   print("Você segura a respiração e abre a porta.")
+
+                                   print("\nAtrás dela existe uma pequena despensa.")
+                                   print("Há várias caixas empilhadas e uma prateleira caída.")
+
+                                   print("\nVocê encontra uma pequena caixa de munição.")
+                                   jogador.adicionar_item("munição", "munição", 3)
+
+                                   print("\nVocê fecha a porta da despensa.")
+                                   break
+
+                                  elif escolha_cozinha == "2":
+                                   print("\nVocê abre o armário.")
+                                   print("Alguns pratos caem no chão e fazem um barulho enorme.")
+
+                                   print("\nVocê espera alguns segundos.")
+                                   print("Nada acontece.")
+
+                                   print("Dentro do armário, você encontra uma bandagem.")
+                                   jogador.adicionar_item("bandagem", "cura")
+
+                                  elif escolha_cozinha == "3":
+                                   print("\nVocê se aproxima da geladeira.")
+                                   print("Ela está coberta de ferrugem.")
+
+                                   print("Quando você abre a porta...")
+                                   print("um líquido escuro escorre pelo chão.")
+
+                                   print("\nVocê fecha a geladeira imediatamente.")
+                                   print("Definitivamente não quer descobrir o que havia ali.")
+
+                                  else:
+                                   print("\nVocê precisa escolher uma das opções.")
                                 corredor = False
                                 break
                             else:
-                                print("\nVocê não possui a chave necessária para abrir esta porta.")
+                             print("\nVocê não possui a chave necessária para abrir esta porta.")
                         elif escolha_final == "2":
-                            print("\n Voce decide descer a escada.")
-                            corredor = False
-                            break
+                         print("\n Voce decide descer a escada.")
+                         corredor = False
+                         break
                     
                         else:
-                                             print("\nVocê hesita... mas precisa escolher uma porta.")
+                         print("\nVocê hesita... mas precisa escolher uma porta.")
                      break
                     dentro_da_sala = False
 
