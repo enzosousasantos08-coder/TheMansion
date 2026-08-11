@@ -27,7 +27,11 @@ def conversar_grupo(estado):
             print("2 - Conversar com Davi")
         print("3 - Voltar")
 
-        conversa = input("Escolha com quem falar: ")
+        try:
+         conversa = input("Escolha com quem falar: ")
+        except ValueError:
+         print("\nEscolha inválida. Por favor, tente novamente.")
+         continue
 
         if conversa == "1" and not estado["conversa_helena"]:
             print("\nHelena: Essa mansão é maior do que parece.")
@@ -41,8 +45,7 @@ def conversar_grupo(estado):
         elif conversa == "3":
             print("\nVocê volta a investigar a mansão.")
             conversando = False
-        else:
-            print("\nNinguém entendeu sua escolha.")
+       
 
 
 # =========================
@@ -75,7 +78,11 @@ while jogando:
     print('2 - Conversar com o grupo')
     print('3 - Sair do jogo')
 
-    escolha = input('Digite o número da sua escolha: ')
+    try:
+     escolha = input('Digite o número da sua escolha: ')
+    except ValueError:
+        print("\nEscolha inválida. Digite apenas números.")
+        continue
 
     if escolha == "1":
         dentro_da_sala = True
@@ -97,7 +104,11 @@ while jogando:
                 print('1 - Explorar a sala de jantar')
             print('2 - Abrir a porta no fundo da sala')
 
-            escolha1 = input('Digite o número da sua escolha: ')
+            try:
+             escolha1 = input('Digite o número da sua escolha: ')
+            except ValueError:
+             print("\nEscolha inválida. Digite apenas números.")
+             continue
 
             if escolha1 == "1" and not estado["mesa_explorada"]:
                 print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
@@ -138,6 +149,7 @@ while jogando:
 
                  if escolha == "2":
                   jogador.usar_item("bandagem")
+                  jogador.curar(20)
 
                  while True:
                     print('O que você deseja fazer agora?')
@@ -145,7 +157,11 @@ while jogando:
                     print('2 - Abrir a segunda porta')
                     print('3 - Continuar pelo corredor')
 
-                    escolha_porta = input('Digite o número da sua escolha: ')
+                    try:
+                     escolha_porta = input('Digite o número da sua escolha: ')
+                    except ValueError:
+                     print("\nEscolha inválida. Digite apenas números.")
+                     continue
                     
                     if escolha_porta == "1":
                      print("\nVocê empurra a porta lentamente...")
@@ -181,7 +197,13 @@ while jogando:
                         print('1 - Tentar abrir a porta à direita')
                         print('2 - Descer a escada')
 
-                        escolha_final = input('Digite o número da sua escolha: ')
+                        try: 
+                         escolha_final = input('Digite o número da sua escolha: ')
+                        except ValueError:
+                         print("\nEscolha inválida. Digite apenas números.")
+                         continue
+
+
                         if escolha_final == "1":
                             print("\nVocê se aproxima da porta e tenta girar a maçaneta.")
                             print("A porta range, mas não abre. Parece estar trancada.")
