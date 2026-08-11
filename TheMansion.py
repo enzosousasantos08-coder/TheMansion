@@ -130,6 +130,15 @@ while jogando:
                  print("O corpo cai no chão e o corredor fica em silêncio novamente.")
                  print("À sua frente existem duas portas antigas à esquerda e um corredor que continua à sua frente.")
 
+                 print("\nO que você deseja fazer?")
+                 print("1 - Continuar")
+                 print("2 - Usar bandagem")
+
+                 escolha = input("> ")
+
+                 if escolha == "2":
+                  jogador.usar_item("bandagem")
+
                  while True:
                     print('O que você deseja fazer agora?')
                     print('1 - Abrir a primeira porta')
