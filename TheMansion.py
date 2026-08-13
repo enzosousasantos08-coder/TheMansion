@@ -1,11 +1,42 @@
 
 
 import random   
+import json
 
 from Personagem import Personagem
 from inimigo import Inimigo
 from armas import faca
 from combate import combate
+
+
+#JSON
+
+def salvar_jogo(jogador, estado):
+    dados = {
+        "vida": jogador.vida,
+        "inventario": jogador.inventario,
+        "estado": estado
+    }
+
+    with open("save.json", "w") as arquivo:
+        json.dump(dados, arquivo, indent=4)
+
+    print("Jogo salvo com sucesso!")
+
+
+def carregar_jogo(jogador, estado):
+    try:
+        with open("save.json", "r") as arquivo:
+            dados = json.load(arquivo)
+
+        jogador.vida = dados["vida"]
+        jogador.inventario = dados["inventario"]
+        estado.update(dados["estado"])
+
+        print("Jogo carregado com sucesso!")
+
+    except FileNotFoundError:
+        print("Nenhum save encontrado.")
 
 # FUNÇÕES AUXILIARES
 
