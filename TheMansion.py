@@ -7,6 +7,15 @@ from inimigo import Inimigo
 from armas import faca
 from combate import combate
 
+# FUNÇÕES AUXILIARES
+
+def pedir_escolha(mensagem):
+    while True:
+        try:
+            return int(input(mensagem)) 
+        except ValueError:
+            print("\nEscolha inválida. Digite apenas números.")
+
    
 # =========================
 # FUNÇÕES DE JOGO
@@ -27,25 +36,282 @@ def conversar_grupo(estado):
             print("2 - Conversar com Davi")
         print("3 - Voltar")
 
-        try:
-         conversa = input("Escolha com quem falar: ")
-        except ValueError:
-         print("\nEscolha inválida. Por favor, tente novamente.")
-         continue
+        
+        conversa = pedir_escolha("Escolha com quem falar: ")
+        
 
-        if conversa == "1" and not estado["conversa_helena"]:
+        if conversa == 1 and not estado["conversa_helena"]:
             print("\nHelena: Essa mansão é maior do que parece.")
             print("Helena: Acho que deveríamos explorar separadamente. Se ficarmos todos juntos, vamos perder muito tempo.")
             estado["conversa_helena"] = True
-        elif conversa == "2" and not estado["conversa_davi"]:
+        elif conversa == 2 and not estado["conversa_davi"]:
             print("\nDavi: Eu não gosto dessa ideia, mas não temos muitas opções.")
             print("Davi: Vamos dividir os caminhos e procurar qualquer coisa que possa nos ajudar.")
             print("Davi: Se encontrarmos algo estranho, voltamos imediatamente.")
             estado["conversa_davi"] = True
-        elif conversa == "3":
+        elif conversa == 3:
             print("\nVocê volta a investigar a mansão.")
             conversando = False
-       
+
+# =========================
+# EXPLORAR SALA DE JANTAR
+# =========================
+
+def explorar_sala_jantar(jogador, estado):
+    if not estado["faca_pega"]:
+        print("\nVocê vira à esquerda e se depara com uma sala de jantar chique.")
+        print("Há uma porta no fundo da sala.")
+        print("Você encontra uma faca sobre a mesa e a guarda com você.")
+
+        jogador.adicionar_item("faca", "arma")
+        jogador.equipar_arma(faca)
+
+        estado["faca_pega"] = True
+
+    else:
+        print("\nA mesa está vazia. Você já pegou a faca.")
+
+    if not estado["chave_pega"]:
+        print("\nVocê explora a sala de jantar.")
+        print("Você encontra uma chave em formato de caveira em cima da mesa principal.")
+
+        jogador.adicionar_item("chave de caveira", "chave")
+
+        item = random.randint(1, 3)
+
+        if item == 1:
+            jogador.adicionar_item("munição", "munição", 3)
+            print("Você também encontrou 3 munições.")
+
+        elif item == 2:
+            jogador.adicionar_item("bandagem", "cura")
+            print("Você também encontrou uma bandagem.")
+
+        else:
+            print("Você não encontrou mais nada.")
+
+        estado["chave_pega"] = True
+        estado["mesa_explorada"] = True
+
+    else:
+        print("\nVocê já explorou a sala de jantar.")
+
+# EXPLORAR COZINHA
+
+def explorar_cozinha(jogador):
+    while True:
+        print("\nNo fundo da cozinha, você percebe três coisas:")
+        print("1 - Uma porta de madeira")
+        print("2 - Um armário antigo")
+        print("3 - Uma geladeira aparentemente desligada")
+        print("4 - Voltar")
+
+        escolha = pedir_escolha("\nO que você deseja investigar? ")
+
+        if escolha == 1:
+            print("\nVocê se aproxima da porta.")
+            print("A maçaneta está coberta por uma substância escura.")
+            print("Você segura a respiração e abre a porta.")
+
+            print("\nAtrás dela existe uma pequena despensa.")
+            print("Há várias caixas empilhadas e uma prateleira caída.")
+
+            print("\nVocê encontra uma pequena caixa de munição.")
+            jogador.adicionar_item("munição", "munição", 3)
+
+            print("\nVocê fecha a porta da despensa.")
+
+        elif escolha == 2:
+            print("\nVocê abre o armário.")
+            print("Alguns pratos caem no chão e fazem um barulho enorme.")
+
+            print("\nVocê espera alguns segundos.")
+            print("Nada acontece.")
+
+            print("Dentro do armário, você encontra uma bandagem.")
+            jogador.adicionar_item("bandagem", "cura")
+
+        elif escolha == 3:
+            print("\nVocê se aproxima da geladeira.")
+            print("Ela está coberta de ferrugem.")
+
+            print("Quando você abre a porta...")
+            print("um líquido escuro escorre pelo chão.")
+
+            print("\nVocê fecha a geladeira imediatamente.")
+            print("Definitivamente não quer descobrir o que havia ali.")
+
+        elif escolha == 4:
+            print("\nVocê deixa a cozinha.")
+            break
+
+        else:
+            print("\nVocê precisa escolher uma das opções.")
+
+# EXPLORAR CORREDOR
+
+def explorar_corredor(jogador):
+    print("\nVocê abre a porta e se depara com um corredor escuro.")
+    print("Você sente um cheiro estranho vindo do final do corredor.")
+
+    print("\nVocê decide seguir em frente, mas de repente uma criatura aparece e te ataca!")
+    print("Você consegue se defender com a faca, mas acaba se machucando no processo.")
+
+    jogador.receber_dano(20)
+
+    zumbi = Inimigo("Zumbi", vida=30)
+    venceu = combate(jogador, zumbi)
+
+    if not venceu:
+        return
+
+    print("\nVocê derrotou a criatura.")
+    print("O corpo cai no chão e o corredor fica em silêncio novamente.")
+
+    print("\nÀ sua frente existem duas portas antigas à esquerda.")
+    print("Também existe um corredor que continua à frente.")
+
+    print("\nO que você deseja fazer?")
+    print("1 - Continuar")
+    print("2 - Usar bandagem")
+
+    escolha = pedir_escolha("> ")
+
+    if escolha == 2:
+        if jogador.quantidade_item("bandagem") > 0:
+            jogador.usar_item("bandagem")
+            jogador.curar(20)
+        else:
+            print("\nVocê não possui nenhuma bandagem.")
+
+    while True:
+        print("\nO que você deseja fazer agora?")
+        print("1 - Abrir a primeira porta")
+        print("2 - Abrir a segunda porta")
+        print("3 - Continuar pelo corredor")
+        print("4 - Voltar")
+
+        escolha_porta = pedir_escolha("Digite o número da sua escolha: ")
+
+        if escolha_porta == 1:
+            print("\nVocê empurra a porta lentamente...")
+            print("As dobradiças rangem, ecoando pelo corredor.")
+            print("O quarto parece abandonado há décadas.")
+
+            print("\nEm cima da cama, algo chama sua atenção.")
+            print("Uma bandagem antiga está escondida entre os lençóis.")
+
+            jogador.adicionar_item("bandagem", "cura")
+
+        elif escolha_porta == 2:
+            print("\nVocê segura a maçaneta e força a porta.")
+            print("A madeira começa a quebrar...")
+            print("Você entra em um pequeno escritório cheio de livros.")
+
+            print("\nNas gavetas da escrivaninha, você encontra algo útil.")
+            print("Algumas munições estavam escondidas dentro.")
+
+            jogador.adicionar_item("munição", "arma", 3)
+
+        elif escolha_porta == 3:
+            explorar_final_corredor(jogador)
+
+        elif escolha_porta == 4:
+            print("\nVocê decide voltar.")
+            break
+
+        else:
+            print("\nEscolha inválida.")
+
+#FINAL DO CORREDOR
+
+def explorar_final_corredor(jogador):
+    print("\nO corpo da criatura permanece imóvel no chão.")
+    print("Você segue em frente por alguns metros.")
+
+    print("O corredor termina em uma parede de concreto desgastada.")
+    print("À esquerda, o corredor continua por um pequeno trecho.")
+    print("Há uma porta à direita e, no final, uma escada.")
+
+    while True:
+        print("\nO que você deseja fazer agora?")
+        print("1 - Tentar abrir a porta à direita")
+        print("2 - Descer a escada")
+        print("3 - Voltar")
+
+        escolha = pedir_escolha("Digite o número da sua escolha: ")
+
+        if escolha == 1:
+            print("\nVocê se aproxima da porta e tenta girar a maçaneta.")
+            print("A porta range, mas não abre.")
+            print("Parece estar trancada.")
+
+            if jogador.quantidade_item("chave de caveira") > 0:
+                print("\nVocê lembra da chave de caveira que encontrou na sala de jantar.")
+                print("Você a utiliza para destrancar a porta.")
+
+                print("A porta se abre lentamente.")
+                print("Uma cozinha suja e abandonada aparece diante de você.")
+
+                print("\nVocê entra na cozinha lentamente.")
+                print("O cheiro de podridão é ainda mais forte aqui.")
+                print("Há pratos quebrados espalhados pelo chão.")
+                print("Manchas escuras cobrem as paredes.")
+
+                explorar_cozinha(jogador)
+
+                break
+
+            else:
+                print("\nVocê não possui a chave necessária para abrir esta porta.")
+
+        elif escolha == 2:
+            print("\nVocê decide descer a escada.")
+            print("A escuridão toma conta do caminho.")
+
+            break
+
+        elif escolha == 3:
+            break
+
+        else:
+            print("\nVocê hesita... mas precisa escolher uma opção.")
+
+# EXPLORAR MANSÃO
+
+def explorar_mansao(jogador, estado):
+    dentro_da_sala = True
+
+    while dentro_da_sala:
+        jogador.mostrar_status()
+
+        explorar_sala_jantar(jogador, estado)
+
+        print("\nO que você deseja fazer agora?")
+
+        if not estado["chave_pega"]:
+            print("1 - Explorar a sala de jantar")
+
+        print("2 - Abrir a porta no fundo")
+        print("3 - Voltar")
+
+        escolha = pedir_escolha("Digite o número da sua escolha: ")
+
+        if escolha == 1:
+            if not estado["chave_pega"]:
+                explorar_sala_jantar(jogador, estado)
+            else:
+                print("\nVocê já explorou a sala de jantar.")
+
+        elif escolha == 2:
+            explorar_corredor(jogador)
+
+        elif escolha == 3:
+            print("\nVocê decide voltar.")
+            dentro_da_sala = False
+
+        else:
+            print("\nEscolha inválida.")
 
 
 # =========================
@@ -73,217 +339,29 @@ jogando = True
 while jogando:
     jogador.mostrar_status()
 
-    print('O que voce deseja fazer?')
-    print('1 - Explorar a mansão')
-    print('2 - Conversar com o grupo')
-    print('3 - Sair do jogo')
+    print("\nO que você deseja fazer?")
+    print("1 - Explorar a mansão")
+    print("2 - Conversar com o grupo")
+    print("3 - Sair do jogo")
 
-    try:
-     escolha = input('Digite o número da sua escolha: ')
-    except ValueError:
-        print("\nEscolha inválida. Digite apenas números.")
-        continue
+    escolha = pedir_escolha("Digite o número da sua escolha: ")
 
-    if escolha == "1":
-        dentro_da_sala = True
+    if escolha == 1:
+        explorar_mansao(jogador, estado)
 
-        while dentro_da_sala:
-            jogador.mostrar_status()
-
-            if not estado["faca_pega"]:
-                print('Voce vira a esquerda e se depara com uma sala de jantar chique com uma porta no fundo')
-                print("Você encontra uma faca sobre a mesa e a guarda com você")
-                jogador.adicionar_item("faca", "arma")
-                jogador.equipar_arma(faca)  
-                estado["faca_pega"] = True
-            else:
-                print("A mesa está vazia. Você já pegou a faca.")
-
-            print('\nO que você deseja fazer agora?')
-            if not estado["chave_pega"]:
-                print('1 - Explorar a sala de jantar')
-            print('2 - Abrir a porta no fundo da sala')
-
-            try:
-             escolha1 = input('Digite o número da sua escolha: ')
-            except ValueError:
-             print("\nEscolha inválida. Digite apenas números.")
-             continue
-
-            if escolha1 == "1" and not estado["mesa_explorada"]:
-                print("\nVocê explora a sala de jantar e encontra uma chave em formato de caveira em cima da mesa principal")
-                jogador.adicionar_item("chave de caveira", "chave")
-
-                item = random.randint(1, 3)
-                if item == 1:
-                    jogador.adicionar_item("munição", "munição", 3)
-                elif item == 2:
-                    jogador.adicionar_item("bandagem", "cura")
-                else:
-                    print("Você não encontrou mais nada.")
-
-                estado["chave_pega"] = True
-                estado["mesa_explorada"] = True
-
-            elif escolha1 == "2":
-                print("\nVocê abre a porta e se depara com um corredor escuro.")
-                print("Você sente um cheiro estranho vindo do final do corredor.")
-                print("\nVocê decide seguir em frente, mas de repente uma criatura aparece e te ataca!")
-                print("Você consegue se defender com a faca, mas acaba se machucando no processo.")
-
-                jogador.receber_dano(20)
-                zumbi = Inimigo("Zumbi", vida=30)
-                venceu = combate(jogador, zumbi)
-
-                if venceu:
-                 corredor = True
-                 print("\nVocê derrotou a criatura.")
-                 print("O corpo cai no chão e o corredor fica em silêncio novamente.")
-                 print("À sua frente existem duas portas antigas à esquerda e um corredor que continua à sua frente.")
-
-                 print("\nO que você deseja fazer?")
-                 print("1 - Continuar")
-                 print("2 - Usar bandagem")
-
-                 escolha = input("> ")
-
-                 if escolha == "2":
-                  jogador.usar_item("bandagem")
-                  jogador.curar(20)
-
-                 while True:
-                    print('O que você deseja fazer agora?')
-                    print('1 - Abrir a primeira porta')
-                    print('2 - Abrir a segunda porta')
-                    print('3 - Continuar pelo corredor')
-
-                    try:
-                     escolha_porta = input('Digite o número da sua escolha: ')
-                    except ValueError:
-                     print("\nEscolha inválida. Digite apenas números.")
-                     continue
-                    
-                    if escolha_porta == "1":
-                     print("\nVocê empurra a porta lentamente...")
-                     print("As dobradiças rangem, ecoando pelo corredor.")
-                     print("O quarto parece abandonado há décadas.")
-
-                     print("\nEm cima da cama, algo chama sua atenção.")
-                     print("Uma bandagem antiga está escondida entre os lençóis.")
-
-                     jogador.adicionar_item("bandagem", "cura")
-                     corredor = False  
-
-                    elif escolha_porta == "2":
-                     print("\nVocê segura a maçaneta e força a porta.")
-                     print("A madeira começa a quebrar...")
-                     print("Você entra em um pequeno escritório cheio de livros.")
-
-                     print("\nNas gavetas da escrivaninha, você encontra algo útil.")
-                     print("Algumas munições estavam escondidas dentro.")
-
-                     jogador.adicionar_item("munição", "arma", 3)
-                     corredor = False
-
-                    elif escolha_porta == "3":
-                     print("\nO corpo da criatura permanece imóvel no chão.")
-                     print("Você segue em frente por alguns metros.")
-                     print("O corredor termina em uma parede de concreto desgastada.")
-                     print("À esquerda, o corredor continua por um pequeno trecho com uma porta na direita" \
-                     " e no final uma escada que desce para um local pouco iluminado.")
-
-                     while True:
-                        print('O que você deseja fazer agora?')
-                        print('1 - Tentar abrir a porta à direita')
-                        print('2 - Descer a escada')
-
-                        try: 
-                         escolha_final = input('Digite o número da sua escolha: ')
-                        except ValueError:
-                         print("\nEscolha inválida. Digite apenas números.")
-                         continue
-
-
-                        if escolha_final == "1":
-                            print("\nVocê se aproxima da porta e tenta girar a maçaneta.")
-                            print("A porta range, mas não abre. Parece estar trancada.")
-                            print("Você percebe que precisa de uma chave para abrir essa porta.")
-                            if jogador.quantidade_item("chave de caveira") > 0:
-                                print("\nVocê lembra da chave de caveira que encontrou na sala de jantar.")
-                                print("Você a utiliza para destrancar a porta.")
-                                print("A porta se abre lentamente, revelando uma cozinha suja e abandonada.")
-                                print("\nVocê entra na cozinha lentamente.")
-                                print("O cheiro de podridão é ainda mais forte aqui.")
-                                print("Há pratos quebrados espalhados pelo chão e manchas escuras nas paredes.")
-
-                                print("\nNo fundo da cozinha, você percebe três coisas:")
-                                print("1 - Uma porta de madeira")
-                                print("2 - Um armário antigo")
-                                print("3 - Uma geladeira aparentemente desligada")
-
-                                while True:
-                                  escolha_cozinha = input("\nO que você deseja investigar? ")
-
-                                  if escolha_cozinha == "1":
-                                   print("\nVocê se aproxima da porta.")
-                                   print("A maçaneta está coberta por uma substância escura.")
-                                   print("Você segura a respiração e abre a porta.")
-
-                                   print("\nAtrás dela existe uma pequena despensa.")
-                                   print("Há várias caixas empilhadas e uma prateleira caída.")
-
-                                   print("\nVocê encontra uma pequena caixa de munição.")
-                                   jogador.adicionar_item("munição", "munição", 3)
-
-                                   print("\nVocê fecha a porta da despensa.")
-                                   break
-
-                                  elif escolha_cozinha == "2":
-                                   print("\nVocê abre o armário.")
-                                   print("Alguns pratos caem no chão e fazem um barulho enorme.")
-
-                                   print("\nVocê espera alguns segundos.")
-                                   print("Nada acontece.")
-
-                                   print("Dentro do armário, você encontra uma bandagem.")
-                                   jogador.adicionar_item("bandagem", "cura")
-
-                                  elif escolha_cozinha == "3":
-                                   print("\nVocê se aproxima da geladeira.")
-                                   print("Ela está coberta de ferrugem.")
-
-                                   print("Quando você abre a porta...")
-                                   print("um líquido escuro escorre pelo chão.")
-
-                                   print("\nVocê fecha a geladeira imediatamente.")
-                                   print("Definitivamente não quer descobrir o que havia ali.")
-
-                                  else:
-                                   print("\nVocê precisa escolher uma das opções.")
-                                corredor = False
-                                break
-                            else:
-                             print("\nVocê não possui a chave necessária para abrir esta porta.")
-                        elif escolha_final == "2":
-                         print("\n Voce decide descer a escada.")
-                         corredor = False
-                         break
-                    
-                        else:
-                         print("\nVocê hesita... mas precisa escolher uma porta.")
-                     break
-                    dentro_da_sala = False
-
-
-    elif escolha == "2":
+    elif escolha == 2:
         conversar_grupo(estado)
 
-    elif escolha == "3":
+    elif escolha == 3:
         print("\nVocê decide parar por aqui. Até a próxima!")
         jogando = False
 
     else:
-        print("\nVocê ficou parado, o seu grupo foi explorar e agora voce esta sozinho, o silencio te incomoda")
+        print(
+            "\nVocê ficou parado. "
+            "Seu grupo foi explorar e agora você está sozinho."
+        )
+        print("O silêncio te incomoda.")
 
     if not jogador.esta_vivo():
         print("\nVocê não resistiu... FIM DE JOGO")
