@@ -4,6 +4,21 @@ class Personagem:
         self.vida = vida
         self.inventario = inventario if inventario is not None else []
         self.arma_equipada = None  # Equipando a faca como arma inicial
+
+    @property
+    def vida(self):
+        return self._vida
+
+    @vida.setter
+    def vida(self, valor):
+        if valor < 0:
+            self._vida = 0
+        elif valor > 100:
+            self._vida = 100
+        else:
+            self._vida = valor
+
+    
     def equipar_arma(self, arma):
         if self.quantidade_item(arma.nome) > 0:
             self.arma_equipada = arma
