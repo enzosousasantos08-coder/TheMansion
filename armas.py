@@ -16,6 +16,25 @@ class Arma:
             alvo.receber_dano(dano)
             return dano
         return 0
-faca = Arma("faca", dano_min=10, dano_max=20, chance_acerto=80)
+class Faca(Arma):
+    def __init__(self):
+        super().__init__(
+            nome="faca",
+            dano_min=10,
+            dano_max=20,
+            chance_acerto=80
+        )
 
-pistola = Arma("pistola", dano_min=25, dano_max=40, chance_acerto=70)
+
+class Pistola(Arma):
+    def __init__(self):
+        super().__init__(
+            nome="pistola",
+            dano_min=25,
+            dano_max=40,
+            chance_acerto=70
+        )
+
+
+faca = Faca()
+pistola = Pistola()
