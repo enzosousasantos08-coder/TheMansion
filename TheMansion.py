@@ -307,9 +307,6 @@ def explorar_mansao(jogador, estado):
 
     while dentro_da_sala:
         jogador.mostrar_status()
-
-        explorar_sala_jantar(jogador, estado)
-
         print("\nO que você deseja fazer agora?")
 
         if not estado["chave_pega"]:
