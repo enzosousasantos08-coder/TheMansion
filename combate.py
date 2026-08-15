@@ -2,7 +2,11 @@ def combate(jogador, inimigo):
     while jogador.esta_vivo() and inimigo.esta_vivo():
 
         print("\nO que você deseja fazer agora?")
-        print("1 - Atacar com a faca")
+        if jogador.arma_equipada:
+            print(f"1 - Atacar com {jogador.arma_equipada.nome}")
+        else:
+         print("1 - Atacar com a faca")
+         
         print("2 - Usar bandagem")
 
         escolhaluta = input("Digite o número da sua escolha: ")
