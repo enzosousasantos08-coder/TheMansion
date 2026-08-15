@@ -55,6 +55,9 @@ class Personagem:
         for item in self.inventario:
             if item["nome"] == nome_item and item["quantidade"] >= quantidade:
                 item["quantidade"] -= quantidade
+
+                if item["quantidade"] == 0:
+                    self.inventario.remove(item)
                 return True
         return False
 
