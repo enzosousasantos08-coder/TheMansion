@@ -7,6 +7,7 @@ from Personagem import Personagem
 from inimigo import Inimigo
 from armas import faca
 from combate import combate
+from utilidades import pedir_escolha
 
 
 #JSON
@@ -38,16 +39,7 @@ def carregar_jogo(jogador, estado):
     except FileNotFoundError:
         print("Nenhum save encontrado.")
 
-# FUNÇÕES AUXILIARES
 
-def pedir_escolha(mensagem):
-    while True:
-        try:
-            return int(input(mensagem)) 
-        except ValueError:
-            print("\nEscolha inválida. Digite apenas números.")
-
-   
 # =========================
 # FUNÇÕES DE JOGO
 # =========================
@@ -242,7 +234,7 @@ def explorar_corredor(jogador):
             print("\nNas gavetas da escrivaninha, você encontra algo útil.")
             print("Algumas munições estavam escondidas dentro.")
 
-            jogador.adicionar_item("munição", "arma", 3)
+            jogador.adicionar_item("munição", "munição", 3)
 
         elif escolha_porta == 3:
             explorar_final_corredor(jogador)
