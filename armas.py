@@ -42,3 +42,10 @@ class Pistola(Arma):
 
 faca = Faca()
 pistola = Pistola()
+
+armas = {
+    "faca": faca,
+    "pistola": pistola
+}
+
+arma = armas.get("faca")
