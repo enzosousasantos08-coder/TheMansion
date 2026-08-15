@@ -2,6 +2,7 @@ class Personagem:
     def __init__(self, nome, vida, inventario=None):
         self.nome = nome
         self.vida = vida
+        self.vida_maxima = vida
         self.inventario = inventario if inventario is not None else []
         self.arma_equipada = None  # Equipando a faca como arma inicial
 
@@ -64,8 +65,8 @@ class Personagem:
 
     def curar(self, quantidade):
         self.vida += quantidade
-        if self.vida > 100:
-            self.vida = 100
+        if self.vida > self.vida_maxima:
+            self.vida = self.vida_maxima
         print(f"\nVocê usa uma bandagem e recupera {quantidade} de vida!")
 
     def esta_vivo(self):
