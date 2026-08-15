@@ -53,9 +53,9 @@ def conversar_grupo(estado):
     while conversando:
         print("\nVocê se reúne com o grupo na entrada da mansão.")
 
-        if not estado["conversa_helena"]:
+        if not estado["conversas"].get("conversa_helena", False):
             print("\n1 - Conversar com Helena")
-        if not estado["conversa_davi"]:
+        if not estado["conversas"].get("conversa_davi", False):
             print("2 - Conversar com Davi")
         print("3 - Voltar")
 
@@ -63,15 +63,15 @@ def conversar_grupo(estado):
         conversa = pedir_escolha("Escolha com quem falar: ")
         
 
-        if conversa == 1 and not estado["conversa_helena"]:
+        if conversa == 1 and not estado["conversas"].get("conversa_helena", False):
             print("\nHelena: Essa mansão é maior do que parece.")
             print("Helena: Acho que deveríamos explorar separadamente. Se ficarmos todos juntos, vamos perder muito tempo.")
-            estado["conversa_helena"] = True
-        elif conversa == 2 and not estado["conversa_davi"]:
+            estado["conversas"]["conversa_helena"] = True
+        elif conversa == 2 and not estado["conversas"].get("conversa_davi", False):
             print("\nDavi: Eu não gosto dessa ideia, mas não temos muitas opções.")
             print("Davi: Vamos dividir os caminhos e procurar qualquer coisa que possa nos ajudar.")
             print("Davi: Se encontrarmos algo estranho, voltamos imediatamente.")
-            estado["conversa_davi"] = True
+            estado["conversas"]["conversa_davi"] = True
         elif conversa == 3:
             print("\nVocê volta a investigar a mansão.")
             conversando = False
@@ -81,7 +81,7 @@ def conversar_grupo(estado):
 # =========================
 
 def explorar_sala_jantar(jogador, estado):
-    if not estado["faca_pega"]:
+    if not estado["itens"]["faca_pega"]:
         print("\nVocê vira à esquerda e se depara com uma sala de jantar chique.")
         print("Há uma porta no fundo da sala.")
         print("Você encontra uma faca sobre a mesa e a guarda com você.")
@@ -89,12 +89,12 @@ def explorar_sala_jantar(jogador, estado):
         jogador.adicionar_item("faca", "arma")
         jogador.equipar_arma(faca)
 
-        estado["faca_pega"] = True
+        estado["itens"]["faca_pega"] = True
 
     else:
         print("\nA mesa está vazia. Você já pegou a faca.")
 
-    if not estado["chave_pega"]:
+    if not estado["itens"]["chave_pega"]:
         print("\nVocê explora a sala de jantar.")
         print("Você encontra uma chave em formato de caveira em cima da mesa principal.")
 
@@ -113,8 +113,8 @@ def explorar_sala_jantar(jogador, estado):
         else:
             print("Você não encontrou mais nada.")
 
-        estado["chave_pega"] = True
-        estado["mesa_explorada"] = True
+        estado["itens"]["chave_pega"] = True
+        estado["itens"]["mesa_explorada"] = True
 
     else:
         print("\nVocê já explorou a sala de jantar.")
@@ -309,7 +309,7 @@ def explorar_mansao(jogador, estado):
         jogador.mostrar_status()
         print("\nO que você deseja fazer agora?")
 
-        if not estado["chave_pega"]:
+        if not estado["itens"].get("chave_pega", False):
             print("1 - Explorar a sala de jantar")
 
         print("2 - Abrir a porta no fundo")
@@ -318,7 +318,7 @@ def explorar_mansao(jogador, estado):
         escolha = pedir_escolha("Digite o número da sua escolha: ")
 
         if escolha == 1:
-            if not estado["chave_pega"]:
+            if not estado["itens"].get("chave_pega", False):
                 explorar_sala_jantar(jogador, estado)
             else:
                 print("\nVocê já explorou a sala de jantar.")

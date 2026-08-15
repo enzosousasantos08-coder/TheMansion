@@ -37,7 +37,7 @@ class Personagem:
 
     def adicionar_item(self, nome_item, tipo, quantidade=1):
         for item in self.inventario:
-            if item["nome"] == nome_item:
+            if item.get("nome") == nome_item:
                 item["quantidade"] += quantidade
                 print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
                 return
@@ -47,16 +47,16 @@ class Personagem:
 
     def quantidade_item(self, nome_item):
         for item in self.inventario:
-            if item["nome"] == nome_item:
-                return item["quantidade"]
+            if item.get("nome") == nome_item:
+                return item.get("quantidade", 0)
         return 0
 
     def usar_item(self, nome_item, quantidade=1):
         for item in self.inventario:
-            if item["nome"] == nome_item and item["quantidade"] >= quantidade:
+            if item.get("nome") == nome_item and item.get("quantidade", 0) >= quantidade:
                 item["quantidade"] -= quantidade
 
-                if item["quantidade"] == 0:
+                if item.get("quantidade", 0) == 0:
                     self.inventario.remove(item)
                 return True
         return False
@@ -84,6 +84,8 @@ class Personagem:
         else:
             print('Inventário:')
             for item in self.inventario:
-                print(f"- {item['nome']} x{item['quantidade']}")
+                nome = item.get("nome", "item desconhecido")
+                quantidade = item.get("quantidade", 0)
+                print(f"- {nome} x{quantidade}")
 
         print('----------------------------')
