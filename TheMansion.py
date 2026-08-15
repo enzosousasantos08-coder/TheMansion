@@ -343,11 +343,16 @@ nome = input("\nQual é o seu nome? ")
 print(f'\n{nome}, você estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
 jogador = Personagem(nome, vida=100)
 estado = {
-    "faca_pega": False,
-    "chave_pega": False,
-    "conversa_helena": False,
-    "conversa_davi": False,
-    "mesa_explorada": False,
+    "itens": {
+        "faca_pega": False,
+        "chave_pega": False,
+        "mesa_explorada": False
+    },
+
+    "conversas": {
+        "conversa_helena": False,
+        "conversa_davi": False
+    }
 }
 
 jogando = True
