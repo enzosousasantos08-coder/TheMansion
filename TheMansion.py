@@ -86,7 +86,7 @@ def explorar_sala_jantar(jogador, estado):
         print("Há uma porta no fundo da sala.")
         print("Você encontra uma faca sobre a mesa e a guarda com você.")
 
-        jogador.adicionar_item(faca, "arma")
+        jogador.adicionar_item("faca", "arma")
         jogador.equipar_arma(faca)
 
         estado["faca_pega"] = True

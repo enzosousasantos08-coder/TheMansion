@@ -13,9 +13,13 @@ class Arma:
         acerto = random.randint(1, 100)
         if acerto <= self.chance_acerto:
             dano = random.randint(self.dano_min, self.dano_max)
+
+            print(f"\nVocê acertou o ataque e causou {dano} de dano!")
+
             alvo.receber_dano(dano)
             return dano
         return 0
+    
 class Faca(Arma):
     def __init__(self):
         super().__init__(
