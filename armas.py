@@ -19,6 +19,11 @@ class Arma:
             alvo.receber_dano(dano)
             return dano
         return 0
+    def mostrar_armas():
+        print("\nArmas disponíveis:")
+
+        for nome, arma in armas.items():
+            print(f"- {nome}: "f"Dano {arma.dano_min}-{arma.dano_max}, Chance de acerto {arma.chance_acerto}%)")
     
 class Faca(Arma):
     def __init__(self):
