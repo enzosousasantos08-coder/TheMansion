@@ -1,4 +1,5 @@
 from inimigo import Inimigo
+from armas import Arma
 
 
 class Personagem:
@@ -12,7 +13,7 @@ class Personagem:
         self.vida = vida
         self.vida_maxima = vida
         self.inventario = inventario if inventario is not None else []
-        self.arma_equipada = None
+        self.arma_equipada: Arma | None = None
 
     @property
     def vida(self) -> int:
@@ -27,13 +28,15 @@ class Personagem:
         else:
             self._vida = valor
 
-    def equipar_arma(self, arma: dict) -> bool:
-        if self.quantidade_item(arma["nome"]) > 0:
-            self.arma_equipada = arma
-            print(f"\nVocê equipou a {arma['nome']}.")
-            return True
-        print(f"\nVocê não possui a {arma['nome']} no inventário.")
-        return False
+    def equipar_arma(self, arma: Arma) -> bool:
+     if self.quantidade_item(arma.nome) > 0:
+        self.arma_equipada = arma
+        print(f"\nVocê equipou a {arma.nome}.")
+        return True
+
+     print(f"\nVocê não possui a {arma.nome} no inventário.")
+     return False
+
     def atacar(self, inimigo: Inimigo) -> None:
         if self.arma_equipada:
             self.arma_equipada.atacar(inimigo)
