@@ -1,12 +1,19 @@
 import random
+from dataclasses import dataclass
 
+@dataclass
 class Inimigo:
-    def __init__(self, nome, vida, dano_min=10, dano_max=15, chance_acerto=70):
-        self.nome = nome
-        self.vida = vida
-        self.dano_min = dano_min
-        self.dano_max = dano_max
-        self.chance_acerto = chance_acerto
+    nome: str
+    vida: int
+    dano_min: int = 10
+    dano_max: int = 15
+    chance_acerto: int = 70
+
+    def esta_vivo(self):
+        return self.vida > 0
+
+    def receber_dano(self, dano):
+        self.vida -= dano
 
     def esta_vivo(self):
         return self.vida > 0
