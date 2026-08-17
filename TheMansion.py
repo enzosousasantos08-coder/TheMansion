@@ -47,7 +47,7 @@ def carregar_jogo(jogador: Personagem, estado: dict) -> None:
 
 
 
-def salvar_jogo(jogador: Personagem, estado: dict) -> None:
+def salvar_jogo(jogador: Personagem, estado: dict[str, dict[str, bool]]) -> None:
     dados = {
         "vida": jogador.vida,
         "inventario": jogador.inventario,
@@ -64,7 +64,7 @@ def salvar_jogo(jogador: Personagem, estado: dict) -> None:
 
 
 
-def carregar_jogo(jogador: Personagem, estado: dict) -> None:
+def carregar_jogo(jogador: Personagem, estado: dict[str, dict[str, bool]]) -> None:
     try:
         with open("save.json", "r") as arquivo:
             dados = json.load(arquivo)
@@ -86,7 +86,7 @@ def carregar_jogo(jogador: Personagem, estado: dict) -> None:
 # =========================
 
 
-def conversar_grupo(estado: dict) -> None:
+def conversar_grupo(estado: dict[str, dict[str, bool]]) -> None:
     conversando = True
 
 
@@ -391,6 +391,7 @@ print('=== JOGO DE SOBREVIVENCIA ===')
 nome = input("\nQual é o seu nome? ")
 print(f'\n{nome}, você estava fugindo de criaturas na floresta, e se refugiou em uma mansão abandonada com seu grupo')
 jogador = Personagem(nome, vida=100)
+
 estado = {
     "itens": {
         "faca_pega": False,

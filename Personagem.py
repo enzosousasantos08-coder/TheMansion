@@ -6,7 +6,7 @@ class Personagem:
         self,
         nome: str,
         vida: int,
-        inventario: list[dict] | None = None
+        inventario: list[dict[str, str | int]] | None = None
     ) -> None:
         self.nome = nome
         self.vida = vida
