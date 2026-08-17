@@ -1,5 +1,12 @@
+from typing import TypedDict
+
 from inimigo import Inimigo
 from armas import Arma
+
+class Item(TypedDict):
+    nome: str
+    tipo: str
+    quantidade: int
 
 
 class Personagem:
@@ -7,7 +14,7 @@ class Personagem:
         self,
         nome: str,
         vida: int,
-        inventario: list[dict[str, str | int]] | None = None
+        inventario: list[Item] | None = None
     ) -> None:
         self.nome = nome
         self.vida = vida
@@ -46,7 +53,7 @@ class Personagem:
 
     def adicionar_item(self, nome_item: str, tipo: str, quantidade: int = 1) -> None:
         for item in self.inventario:
-            if item.get("nome") == nome_item:
+            if item["nome"] == nome_item:
                 item["quantidade"] += quantidade
                 print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
                 return
@@ -55,19 +62,21 @@ class Personagem:
 
 
     def quantidade_item(self, nome_item: str) -> int:
-        for item in self.inventario:
-            if item.get("nome") == nome_item:
-                return item.get("quantidade", 0)
-        return 0
+     for item in self.inventario:
+        if item["nome"] == nome_item:
+            return item["quantidade"]
+
+     return 0
 
     def usar_item(self, nome_item: str, quantidade: int = 1) -> bool:
         for item in self.inventario:
-            if item.get("nome") == nome_item and item.get("quantidade", 0) >= quantidade:
-                item["quantidade"] -= quantidade
+            if item["nome"] == nome_item and item["quantidade"] >= quantidade:
+               item["quantidade"] -= quantidade
 
-                if item.get("quantidade", 0) == 0:
-                    self.inventario.remove(item)
-                return True
+               if item["quantidade"] == 0:
+                  self.inventario.remove(item)
+
+               return True
         return False
 
     def receber_dano(self, dano: int) -> None:
@@ -93,8 +102,8 @@ class Personagem:
         else:
             print('Inventário:')
             for item in self.inventario:
-                nome = item.get("nome", "item desconhecido")
-                quantidade = item.get("quantidade", 0)
+                nome = item["nome"]
+                quantidade = item["quantidade"]
                 print(f"- {nome} x{quantidade}")
 
         print('----------------------------')
