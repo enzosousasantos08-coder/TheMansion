@@ -1,17 +1,25 @@
+from inimigo import Inimigo
+
+
 class Personagem:
-    def __init__(self, nome, vida, inventario=None):
+    def __init__(
+        self,
+        nome: str,
+        vida: int,
+        inventario: list[dict] | None = None
+    ) -> None:
         self.nome = nome
         self.vida = vida
         self.vida_maxima = vida
         self.inventario = inventario if inventario is not None else []
-        self.arma_equipada = None  # Equipando a faca como arma inicial
+        self.arma_equipada = None
 
     @property
-    def vida(self):
+    def vida(self) -> int:
         return self._vida
 
     @vida.setter
-    def vida(self, valor):
+    def vida(self, valor: int) -> None:
         if valor < 0:
             self._vida = 0
         elif valor > 100:
@@ -19,23 +27,21 @@ class Personagem:
         else:
             self._vida = valor
 
-    
-    def equipar_arma(self, arma):
-        if self.quantidade_item(arma.nome) > 0:
+    def equipar_arma(self, arma: dict) -> bool:
+        if self.quantidade_item(arma["nome"]) > 0:
             self.arma_equipada = arma
-            print(f"\nVocê equipou a {arma.nome}.")
+            print(f"\nVocê equipou a {arma['nome']}.")
             return True
-        print(f"\nVocê não possui a {arma.nome} no inventário.")
+        print(f"\nVocê não possui a {arma['nome']} no inventário.")
         return False
-    def atacar(self, inimigo):
+    def atacar(self, inimigo: Inimigo) -> None:
         if self.arma_equipada:
             self.arma_equipada.atacar(inimigo)
         else:
             print("\nVocê não tem uma arma equipada!")
 
-        
 
-    def adicionar_item(self, nome_item, tipo, quantidade=1):
+    def adicionar_item(self, nome_item: str, tipo: str, quantidade: int = 1) -> None:
         for item in self.inventario:
             if item.get("nome") == nome_item:
                 item["quantidade"] += quantidade
@@ -45,13 +51,13 @@ class Personagem:
         print(f"\nVocê encontrou {quantidade} {nome_item}(s).")
 
 
-    def quantidade_item(self, nome_item):
+    def quantidade_item(self, nome_item: str) -> int:
         for item in self.inventario:
             if item.get("nome") == nome_item:
                 return item.get("quantidade", 0)
         return 0
 
-    def usar_item(self, nome_item, quantidade=1):
+    def usar_item(self, nome_item: str, quantidade: int = 1) -> bool:
         for item in self.inventario:
             if item.get("nome") == nome_item and item.get("quantidade", 0) >= quantidade:
                 item["quantidade"] -= quantidade
@@ -61,21 +67,21 @@ class Personagem:
                 return True
         return False
 
-    def receber_dano(self, dano):
+    def receber_dano(self, dano: int) -> None:
         self.vida -= dano
         print(f"\nVocê recebeu {dano} de dano!")
         print(f"Vida atual: {self.vida}")
 
-    def curar(self, quantidade):
+    def curar(self, quantidade: int) -> None:
         self.vida += quantidade
         if self.vida > self.vida_maxima:
             self.vida = self.vida_maxima
         print(f"\nVocê usa uma bandagem e recupera {quantidade} de vida!")
 
-    def esta_vivo(self):
+    def esta_vivo(self) -> bool:
         return self.vida > 0
 
-    def mostrar_status(self):
+    def mostrar_status(self) -> None:
         print('\n----------------------------')
         print(f'Vida: {self.vida}')
 

@@ -1,6 +1,8 @@
 import random
 from dataclasses import dataclass
 
+import Personagem
+
 @dataclass
 class Inimigo:
     nome: str
@@ -9,19 +11,13 @@ class Inimigo:
     dano_max: int = 15
     chance_acerto: int = 70
 
-    def esta_vivo(self):
+    def esta_vivo(self) -> bool:
         return self.vida > 0
 
-    def receber_dano(self, dano):
+    def receber_dano(self, dano: int) -> None:
         self.vida -= dano
 
-    def esta_vivo(self):
-        return self.vida > 0
-
-    def receber_dano(self, dano):
-        self.vida -= dano
-
-    def atacar(self, alvo):
+    def atacar(self, alvo: Personagem) -> None:
         acerto = random.randint(1, 100)
         if acerto <= self.chance_acerto:
             dano = random.randint(self.dano_min, self.dano_max)

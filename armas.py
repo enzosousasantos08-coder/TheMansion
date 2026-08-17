@@ -4,11 +4,19 @@ import random
 
 
 class Arma:
-    def __init__(self, nome, dano_min, dano_max, chance_acerto):
+    def __init__(
+        self,
+        nome: str,
+        dano_min: int,
+        dano_max: int,
+        chance_acerto: int
+    ) -> None:
         self.nome = nome
         self.dano_min = dano_min
         self.dano_max = dano_max
         self.chance_acerto = chance_acerto
+
+
     def atacar(self, alvo):
         acerto = random.randint(1, 100)
         if acerto <= self.chance_acerto:
@@ -19,14 +27,16 @@ class Arma:
             alvo.receber_dano(dano)
             return dano
         return 0
-    def mostrar_armas():
+    
+    @staticmethod
+    def mostrar_armas() -> None:
         print("\nArmas disponíveis:")
 
         for nome, arma in armas.items():
             print(f"- {nome}: "f"Dano {arma.dano_min}-{arma.dano_max}, Chance de acerto {arma.chance_acerto}%)")
     
 class Faca(Arma):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             nome="faca",
             dano_min=10,
@@ -36,7 +46,7 @@ class Faca(Arma):
 
 
 class Pistola(Arma):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             nome="pistola",
             dano_min=25,

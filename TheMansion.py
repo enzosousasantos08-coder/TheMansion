@@ -12,7 +12,7 @@ from utilidades import pedir_escolha
 
 #JSON
 
-def salvar_jogo(jogador, estado):
+def salvar_jogo(jogador: Personagem, estado: dict) -> None:
     dados = {
         "vida": jogador.vida,
         "inventario": jogador.inventario,
@@ -25,7 +25,7 @@ def salvar_jogo(jogador, estado):
     print("Jogo salvo com sucesso!")
 
 
-def carregar_jogo(jogador, estado):
+def carregar_jogo(jogador: Personagem, estado: dict) -> None:
     try:
         with open("save.json", "r") as arquivo:
             dados = json.load(arquivo)
@@ -47,31 +47,80 @@ def carregar_jogo(jogador, estado):
 
 
 
-def conversar_grupo(estado):
+def salvar_jogo(jogador: Personagem, estado: dict) -> None:
+    dados = {
+        "vida": jogador.vida,
+        "inventario": jogador.inventario,
+        "estado": estado
+    }
+
+
+    with open("save.json", "w") as arquivo:
+        json.dump(dados, arquivo, indent=4)
+
+
+    print("Jogo salvo com sucesso!")
+
+
+
+
+def carregar_jogo(jogador: Personagem, estado: dict) -> None:
+    try:
+        with open("save.json", "r") as arquivo:
+            dados = json.load(arquivo)
+
+
+        jogador.vida = dados["vida"]
+        jogador.inventario = dados["inventario"]
+        estado.update(dados["estado"])
+
+
+        print("Jogo carregado com sucesso!")
+
+
+    except FileNotFoundError:
+        print("Nenhum save encontrado.")
+
+# =========================
+# CONVERSAR COM O GRUPO
+# =========================
+
+
+def conversar_grupo(estado: dict) -> None:
     conversando = True
+
 
     while conversando:
         print("\nVocê se reúne com o grupo na entrada da mansão.")
 
+
         if not estado["conversas"].get("conversa_helena", False):
             print("\n1 - Conversar com Helena")
+
+
         if not estado["conversas"].get("conversa_davi", False):
             print("2 - Conversar com Davi")
+
+
         print("3 - Voltar")
 
-        
+
         conversa = pedir_escolha("Escolha com quem falar: ")
-        
+
 
         if conversa == 1 and not estado["conversas"].get("conversa_helena", False):
             print("\nHelena: Essa mansão é maior do que parece.")
             print("Helena: Acho que deveríamos explorar separadamente. Se ficarmos todos juntos, vamos perder muito tempo.")
             estado["conversas"]["conversa_helena"] = True
+
+
         elif conversa == 2 and not estado["conversas"].get("conversa_davi", False):
             print("\nDavi: Eu não gosto dessa ideia, mas não temos muitas opções.")
             print("Davi: Vamos dividir os caminhos e procurar qualquer coisa que possa nos ajudar.")
             print("Davi: Se encontrarmos algo estranho, voltamos imediatamente.")
             estado["conversas"]["conversa_davi"] = True
+
+
         elif conversa == 3:
             print("\nVocê volta a investigar a mansão.")
             conversando = False
@@ -80,7 +129,7 @@ def conversar_grupo(estado):
 # EXPLORAR SALA DE JANTAR
 # =========================
 
-def explorar_sala_jantar(jogador, estado):
+def explorar_sala_jantar(jogador: Personagem, estado: dict) -> None:
     if not estado["itens"]["faca_pega"]:
         print("\nVocê vira à esquerda e se depara com uma sala de jantar chique.")
         print("Há uma porta no fundo da sala.")
@@ -121,7 +170,7 @@ def explorar_sala_jantar(jogador, estado):
 
 # EXPLORAR COZINHA
 
-def explorar_cozinha(jogador):
+def explorar_cozinha(jogador: Personagem) -> None:
     while True:
         print("\nNo fundo da cozinha, você percebe três coisas:")
         print("1 - Uma porta de madeira")
@@ -173,7 +222,7 @@ def explorar_cozinha(jogador):
 
 # EXPLORAR CORREDOR
 
-def explorar_corredor(jogador):
+def explorar_corredor(jogador: Personagem) -> None:
     print("\nVocê abre a porta e se depara com um corredor escuro.")
     print("Você sente um cheiro estranho vindo do final do corredor.")
 
@@ -248,7 +297,7 @@ def explorar_corredor(jogador):
 
 #FINAL DO CORREDOR
 
-def explorar_final_corredor(jogador):
+def explorar_final_corredor(jogador: Personagem) -> None:
     print("\nO corpo da criatura permanece imóvel no chão.")
     print("Você segue em frente por alguns metros.")
 
@@ -302,7 +351,7 @@ def explorar_final_corredor(jogador):
 
 # EXPLORAR MANSÃO
 
-def explorar_mansao(jogador, estado):
+def explorar_mansao(jogador: Personagem, estado: dict) -> None:
     dentro_da_sala = True
 
     while dentro_da_sala:
