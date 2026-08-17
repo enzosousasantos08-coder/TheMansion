@@ -25,7 +25,7 @@ def salvar_jogo(jogador: Personagem, estado: dict) -> None:
     print("Jogo salvo com sucesso!")
 
 
-def carregar_jogo(jogador: Personagem, estado: dict) -> None:
+def carregar_jogo(jogador: Personagem, estado: dict[str, dict[str, bool]]) -> None:
     try:
         with open("save.json", "r") as arquivo:
             dados = json.load(arquivo)

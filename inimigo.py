@@ -1,7 +1,9 @@
 import random
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-import Personagem
+if TYPE_CHECKING:
+    from Personagem import Personagem
 
 @dataclass
 class Inimigo:
@@ -17,7 +19,7 @@ class Inimigo:
     def receber_dano(self, dano: int) -> None:
         self.vida -= dano
 
-    def atacar(self, alvo: Personagem) -> None:
+    def atacar(self, alvo: "Personagem") -> None:
         acerto = random.randint(1, 100)
         if acerto <= self.chance_acerto:
             dano = random.randint(self.dano_min, self.dano_max)
