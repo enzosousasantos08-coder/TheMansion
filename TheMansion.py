@@ -10,24 +10,38 @@ from combate import combate
 from utilidades import pedir_escolha
 
 
-#JSON
+# =========================
+# JSON SAVE AND LOAD
+# =========================
 
-def salvar_jogo(jogador: Personagem, estado: dict) -> None:
-    dados = {
+def criar_dados_save(
+    jogador: Personagem,
+    estado: dict
+) -> dict:
+    return {
         "vida": jogador.vida,
         "inventario": jogador.inventario,
         "estado": estado
     }
 
-    with open("save.json", "w") as arquivo:
+def salvar_jogo(
+    jogador: Personagem,
+    estado: dict
+) -> None:
+    dados = criar_dados_save(jogador, estado)
+
+    with open("save.json", "w", encoding="utf-8") as arquivo:
         json.dump(dados, arquivo, indent=4)
 
     print("Jogo salvo com sucesso!")
 
 
-def carregar_jogo(jogador: Personagem, estado: dict[str, dict[str, bool]]) -> None:
+def carregar_jogo(
+    jogador: Personagem,
+    estado: dict
+) -> None:
     try:
-        with open("save.json", "r") as arquivo:
+        with open("save.json", "r", encoding="utf-8") as arquivo:
             dados = json.load(arquivo)
 
         jogador.vida = dados["vida"]
@@ -39,48 +53,8 @@ def carregar_jogo(jogador: Personagem, estado: dict[str, dict[str, bool]]) -> No
     except FileNotFoundError:
         print("Nenhum save encontrado.")
 
-
-# =========================
-# FUNÇÕES DE JOGO
-# =========================
-
-
-
-
-def salvar_jogo(jogador: Personagem, estado: dict[str, dict[str, bool]]) -> None:
-    dados = {
-        "vida": jogador.vida,
-        "inventario": jogador.inventario,
-        "estado": estado
-    }
-
-
-    with open("save.json", "w") as arquivo:
-        json.dump(dados, arquivo, indent=4)
-
-
-    print("Jogo salvo com sucesso!")
-
-
-
-
-def carregar_jogo(jogador: Personagem, estado: dict[str, dict[str, bool]]) -> None:
-    try:
-        with open("save.json", "r") as arquivo:
-            dados = json.load(arquivo)
-
-
-        jogador.vida = dados["vida"]
-        jogador.inventario = dados["inventario"]
-        estado.update(dados["estado"])
-
-
-        print("Jogo carregado com sucesso!")
-
-
-    except FileNotFoundError:
-        print("Nenhum save encontrado.")
-
+    except json.JSONDecodeError:
+        print("O arquivo de save está corrompido.")
 # =========================
 # CONVERSAR COM O GRUPO
 # =========================
